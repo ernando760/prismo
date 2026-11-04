@@ -1,0 +1,24 @@
+{
+  "name": "Button",
+  "platform": "web",
+  "atomic": "atom",
+  "tokens": {"foreground": {"path": "semantic.light.text", "binding": "var(--ds-text)"}},
+  "new_tokens": [],
+  "files": [
+    {"path": "src/atoms/Button.tsx", "action": "create", "role": "component"},
+    {"path": "stories/Button.stories.tsx", "action": "create", "role": "catalog"},
+    {"path": "tests/Button.test.tsx", "action": "create", "role": "test"},
+    {"path": "docs/Button.md", "action": "create", "role": "documentation"}
+  ],
+  "states": ["default", "disabled"],
+  "cases": [
+    {"name": "Acionar", "states": ["default"], "assertions": ["Expor nome acessível", "Disparar callback uma vez por ativação"]},
+    {"name": "Desabilitado", "states": ["disabled"], "assertions": ["Não disparar callback"]}
+  ],
+  "checks": [
+    {"kind": "functional", "command": "npm run test -- Button"},
+    {"kind": "accessibility", "command": "npm run test:a11y -- Button"}
+  ],
+  "catalog": {"tool": "storybook", "config": ".storybook/main.ts"},
+  "questions": []
+}

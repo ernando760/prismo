@@ -1,0 +1,58 @@
+/* Apresentação editorial do portal, não fundações do DS. Herda tema/identidade local. */
+.prismo-docs {
+  --prismo-doc-line: var(--ifm-color-emphasis-300, #c8ccd1);
+  --prismo-doc-surface: var(--ifm-background-surface-color, #fff);
+  --prismo-doc-muted: var(--ifm-color-emphasis-700, #454950);
+  color: var(--ifm-font-color-base, #1c1e21);
+  font-family: var(--ifm-font-family-base, inherit);
+  line-height: var(--ifm-line-height-base, 1.65);
+  min-width: 0;
+}
+.prismo-docs *, .prismo-docs *::before, .prismo-docs *::after { box-sizing: border-box; }
+.prismo-docs > :first-child { margin-top: 0; }
+.prismo-docs h2 { margin-block: 3rem 1rem; font-size: clamp(1.4rem, 2.3vw, 1.8rem); line-height: 1.25; letter-spacing: -.02em; text-wrap: balance; }
+.prismo-docs h3 { margin-block: 1.75rem .75rem; line-height: 1.35; }
+.prismo-docs p, .prismo-docs li { max-width: 72ch; }
+.prismo-docs p { margin-block: 0 1rem; }
+.prismo-docs code { white-space: normal; overflow-wrap: anywhere; }
+.prismo-docs pre code { white-space: pre; overflow-wrap: normal; }
+.prismo-docs a { text-underline-offset: .2em; }
+.prismo-docs :is(a, summary, input, select, button):focus-visible { outline: 2px solid var(--ifm-color-primary, currentColor); outline-offset: 4px; }
+.prismo-docs ::selection { color: var(--ifm-font-color-base); background: var(--ifm-color-emphasis-300); }
+.prismo-doc-lead { font-size: 1.125rem; line-height: 1.65; max-width: 68ch; margin-bottom: 2rem; }
+.prismo-doc-pending { color: inherit; padding-block: .75rem; font-size: .9rem; }
+.prismo-doc-example { margin: 1.5rem 0; min-width: 0; }
+.prismo-doc-stage { border: 1px solid var(--prismo-doc-line); background: var(--prismo-doc-surface); border-radius: .5rem; padding: clamp(1rem, 3vw, 2rem); min-height: 9rem; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1rem; overflow-x: auto; }
+.prismo-doc-example figcaption { color: var(--prismo-doc-muted); font-size: .875rem; line-height: 1.5; margin-top: .75rem; max-width: 68ch; }
+.prismo-doc-examples { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1.5rem; align-items: start; }
+.prismo-doc-examples > figure { margin: 0; }
+.prismo-doc-guidance { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; margin-block: 1.5rem; border-block: 1px solid var(--prismo-doc-line); padding-block: 1.25rem; }
+.prismo-doc-guidance h3 { margin-top: 0; font-size: 1.05rem; }
+.prismo-doc-guidance ul { padding-inline-start: 1.25rem; margin-bottom: 0; }
+.prismo-doc-details { margin-top: .75rem; font-size: .875rem; }
+.prismo-doc-details > summary { cursor: pointer; min-height: 2.75rem; display: list-item; list-style-position: inside; padding-block: .65rem; }
+.prismo-doc-details > div { padding-block: .75rem; }
+.prismo-doc-catalog-link { margin-block: 1rem; font-weight: 600; }
+.prismo-doc-catalog-link a { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; }
+.prismo-doc-token-facts { margin: 1.5rem 0; }
+.prismo-doc-token-facts > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 1.5rem; border-bottom: 1px solid var(--prismo-doc-line); padding-block: 1.25rem; }
+.prismo-doc-token-facts dt { font-size: .875rem; font-weight: 500; }
+.prismo-doc-token-facts dd { margin: 0; min-width: 0; }
+.prismo-doc-value { font-variant-numeric: tabular-nums; font-weight: 600; overflow-wrap: anywhere; }
+.prismo-doc-foundation { margin-block: 1.5rem; min-width: 0; }
+/* Escopo mais específico que o renderer compartilhado: não altera suas stories. */
+.prismo-docs .prismo-catalog { min-height: 0; padding: 0; font: inherit; color: inherit; background: transparent; }
+.prismo-docs .prismo-catalog .toolbar { padding-block: 0 1.25rem; margin-bottom: 1.5rem; border-color: var(--prismo-doc-line); }
+.prismo-docs .prismo-catalog .toolbar input, .prismo-docs .prismo-catalog .toolbar select { background: var(--prismo-doc-surface); color: inherit; border-color: var(--prismo-doc-muted); caret-color: currentColor; }
+.prismo-docs .prismo-catalog input::placeholder { color: var(--prismo-doc-muted); }
+.prismo-docs .prismo-catalog .shared-palette { color: inherit; background: var(--prismo-doc-surface); border-color: var(--prismo-doc-line); padding: 1.25rem; }
+.prismo-docs .prismo-catalog .panel { border-color: var(--prismo-doc-line); padding: 1.25rem; }
+.prismo-docs .prismo-catalog h3, .prismo-docs .prismo-catalog h4, .prismo-docs .prismo-catalog h5, .prismo-docs .prismo-catalog h6 { margin: 0; line-height: 1.4; }
+.prismo-docs .prismo-catalog .panels { gap: 1.5rem; }
+.prismo-docs .prismo-catalog .type-scale-step { grid-template-columns: minmax(3rem, 4.5rem) minmax(0, 1fr) auto; }
+.prismo-docs .prismo-catalog figure { margin: 0; }
+.prismo-docs .prismo-catalog code { color: inherit; background: transparent; border: 0; padding: 0; }
+@media (max-width: 48rem) {
+  .prismo-doc-guidance { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .prismo-doc-token-facts > div { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+}

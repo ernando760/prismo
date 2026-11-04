@@ -1,0 +1,187 @@
+{
+  "date_utc": "2026-11-04T12:33:50.185815+00:00",
+  "source_hashes_before": {
+    "package.json": "c7f834708b14cbe12b35086074c02a1fbead48e417bc63820fa6391b0d7a5796",
+    "package-lock.json": "b07640b2e3f35c0e3f33c04edcddd70a333ccc535c6681d6c0cb2433a7db16ac",
+    "scripts/test_suite.py": "26104ac2cf1827ea9841ea3f8a41e13c042856d206470f631208a69ccefc018e",
+    "tests/test_suite_runner.py": "d873f84809a68c4fe7e240c8804afb8a885782b60ad883a21456a997d1362633",
+    "skills/prismo/SKILL.md": "cd9a58b95b15f7ef754aa4aafffff60d33fed97a7960624adf6cec1282212a30"
+  },
+  "initial_node_modules": false,
+  "initial_cache": false,
+  "prismo_test_overrides": false,
+  "commands": [
+    {
+      "name": "environment",
+      "command": [
+        "bash",
+        "-lc",
+        "uname -srmo; node --version; npm --version; python3 --version; npm config get registry; npm config get ignore-scripts"
+      ],
+      "exit_code": 0,
+      "seconds": 0.476,
+      "stdout": "Linux 6.18.56 x86_64 GNU/Linux\nv24.22.1\n11.19.1\nPython 3.14.4\nhttps://registry.npmjs.org/\nfalse\n",
+      "stderr": ""
+    },
+    {
+      "name": "scripts-enabled",
+      "command": [
+        "npm",
+        "config",
+        "get",
+        "ignore-scripts"
+      ],
+      "exit_code": 0,
+      "seconds": 0.094,
+      "stdout": "false\n",
+      "stderr": ""
+    },
+    {
+      "name": "npm-ci",
+      "command": [
+        "npm",
+        "ci",
+        "--foreground-scripts",
+        "--cache",
+        "/vercel/sandbox/npm-cache"
+      ],
+      "exit_code": 0,
+      "seconds": 3.409,
+      "stdout": "\n> esbuild@0.28.2 postinstall\n> node install.js\n\n\nadded 198 packages, and audited 199 packages in 3s\n\n98 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\n",
+      "stderr": "npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation\nnpm warn install-scripts 1 package has install scripts not yet covered by allowScripts:\nnpm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)\nnpm warn install-scripts\nnpm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.\nnpm notice\nnpm notice New major version of npm available! 11.19.1 -> 12.2.1\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1\nnpm notice To update run: npm install -g npm@12.2.1\nnpm notice\n"
+    },
+    {
+      "name": "esbuild",
+      "command": [
+        "node",
+        "-e",
+        "const e=require('esbuild');e.transformSync('const n: number = 1',{loader:'ts'});console.log('esbuild '+e.version+' sync transform OK');const r=require('node:child_process').spawnSync(process.execPath,['--version'],{encoding:'utf8'});if(r.error||r.status!==0)throw r.error||Error(r.stderr);console.log('spawnSync Node OK');"
+      ],
+      "exit_code": 0,
+      "seconds": 0.099,
+      "stdout": "esbuild 0.28.2 sync transform OK\nspawnSync Node OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "runner",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_suite_runner.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.196,
+      "stdout": "",
+      "stderr": "test_python_skips_and_empty_output_fail (test_suite_runner.SuiteRunnerTests.test_python_skips_and_empty_output_fail) ... ok\ntest_real_node_reporter_preserves_pass_failure_and_skip_detection (test_suite_runner.SuiteRunnerTests.test_real_node_reporter_preserves_pass_failure_and_skip_detection) ... ok\ntest_skipped_and_missing_results_fail (test_suite_runner.SuiteRunnerTests.test_skipped_and_missing_results_fail) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.131s\n\nOK\n"
+    },
+    {
+      "name": "suite",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0,
+      "seconds": 20.823,
+      "stdout": "\n> test\n> python3 scripts/test_suite.py\n\nAPROVADO: /usr/bin/python3 -m unittest discover -s tests -q\n----------------------------------------------------------------------\nRan 236 tests in 17.130s\n\nOK\nAPROVADO: node --test-reporter=tap tests/storybook/catalog.test.mjs\nTAP version 13\n# Subtest: resolve aliases, inherited types and $root without mutating the source\nok 1 - resolve aliases, inherited types and $root without mutating the source\n  ---\n  duration_ms: 2.078774\n  type: 'test'\n  ...\n# Subtest: models include all five foundations and theme-specific values\nok 2 - models include all five foundations and theme-specific values\n  ---\n  duration_ms: 1.376948\n  type: 'test'\n  ...\n# Subtest: a token change propagates into the visual model without copying values\nok 3 - a token change propagates into the visual model without copying values\n  ---\n  duration_ms: 0.807076\n  type: 'test'\n  ...\n# Subtest: missing aliases and cycles are explicit row errors\nok 4 - missing aliases and cycles are explicit row errors\n  ---\n  duration_ms: 1.64574\n  type: 'test'\n  ...\n# Subtest: missing theme never silently uses the other theme\nok 5 - missing theme never silently uses the other theme\n  ---\n  duration_ms: 0.639897\n  type: 'test'\n  ...\n# Subtest: type mismatches inside composites are rejected\nok 6 - type mismatches inside composites are rejected\n  ---\n  duration_ms: 0.325278\n  type: 'test'\n  ...\n# Subtest: invalid and unsupported values are reported rather than invented\nok 7 - invalid and unsupported values are reported rather than invented\n  ---\n  duration_ms: 0.32266\n  type: 'test'\n  ...\n# Subtest: shadow none, negative offset/spread, inset, alpha and aliases serialize to CSS\nok 8 - shadow none, negative offset/spread, inset, alpha and aliases serialize to CSS\n  ---\n  duration_ms: 0.489764\n  type: 'test'\n  ...\n# Subtest: shadow layer arrays are not flattened and invalid blur fails\nok 9 - shadow layer arrays are not flattened and invalid blur fails\n  ---\n  duration_ms: 1.04248\n  type: 'test'\n  ...\n# Subtest: CSS dimensions and color alpha retain exported precision\nok 10 - CSS dimensions and color alpha retain exported precision\n  ---\n  duration_ms: 0.420152\n  type: 'test'\n  ...\n# Subtest: collection mappings may follow project conventions without renaming tokens\nok 11 - collection mappings may follow project conventions without renaming tokens\n  ---\n  duration_ms: 0.760396\n  type: 'test'\n  ...\n# Subtest: templates expose five stories and reference a JSON import\nok 12 - templates expose five stories and reference a JSON import\n  ---\n  duration_ms: 0.463264\n  type: 'test'\n  ...\n# Subtest: font families quote names while retaining CSS generic fallbacks\nok 13 - font families quote names while retaining CSS generic fallbacks\n  ---\n  duration_ms: 0.671721\n  type: 'test'\n  ...\n1..13\n# tests 13\n# suites 0\n# pass 13\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 25.15731\nAPROVADO: node --test-reporter=tap tests/storybook/render.test.mjs\nTAP version 13\n# Subtest: renders all five foundations in both theme panels\nok 1 - renders all five foundations in both theme panels\n  ---\n  duration_ms: 186.48547\n  type: 'test'\n  ...\n# Subtest: theme control switches and comparison returns without global side effects\nok 2 - theme control switches and comparison returns without global side effects\n  ---\n  duration_ms: 104.745219\n  type: 'test'\n  ...\n# Subtest: filter operates on token paths and reports empty results\nok 3 - filter operates on token paths and reports empty results\n  ---\n  duration_ms: 15.322234\n  type: 'test'\n  ...\n# Subtest: typography dimensions and fallback family follow source changes\nok 4 - typography dimensions and fallback family follow source changes\n  ---\n  duration_ms: 18.881838\n  type: 'test'\n  ...\n# Subtest: full radius and zero width are displayed without interpreting full as pixels\nok 5 - full radius and zero width are displayed without interpreting full as pixels\n  ---\n  duration_ms: 27.815464\n  type: 'test'\n  ...\n# Subtest: unsupported aliases and missing themes remain visible\nok 6 - unsupported aliases and missing themes remain visible\n  ---\n  duration_ms: 8.853762\n  type: 'test'\n  ...\n# Subtest: token names cannot inject HTML\nok 7 - token names cannot inject HTML\n  ---\n  duration_ms: 9.330562\n  type: 'test'\n  ...\n# Subtest: actual light and dark surfaces are applied from token aliases\nok 8 - actual light and dark surfaces are applied from token aliases\n  ---\n  duration_ms: 8.581088\n  type: 'test'\n  ...\n# Subtest: colors organize primitives and semantics with HEX labels\nok 9 - colors organize primitives and semantics with HEX labels\n  ---\n  duration_ms: 28.625088\n  type: 'test'\n  ...\n# Subtest: aliases remain secondary in collapsed native details, without raw JSON\nok 10 - aliases remain secondary in collapsed native details, without raw JSON\n  ---\n  duration_ms: 34.729479\n  type: 'test'\n  ...\n# Subtest: spacing comparisons retain exact widths and readable measurements\nok 11 - spacing comparisons retain exact widths and readable measurements\n  ---\n  duration_ms: 23.665681\n  type: 'test'\n  ...\n# Subtest: typographic hierarchy has formatted properties without flattening token styles\nok 12 - typographic hierarchy has formatted properties without flattening token styles\n  ---\n  duration_ms: 13.905422\n  type: 'test'\n  ...\n# Subtest: elevation uses theme surfaces, actual shadows and layer measurements\nok 13 - elevation uses theme surfaces, actual shadows and layer measurements\n  ---\n  duration_ms: 9.957768\n  type: 'test'\n  ...\n# Subtest: transparent colors show alpha and explain approximated HEX without changing values\nok 14 - transparent colors show alpha and explain approximated HEX without changing values\n  ---\n  duration_ms: 18.745912\n  type: 'test'\n  ...\n# Subtest: errors stay attached to individual swatches instead of hiding valid palettes\nok 15 - errors stay attached to individual swatches instead of hiding valid palettes\n  ---\n  duration_ms: 12.837351\n  type: 'test'\n  ...\n# Subtest: primitive colors render once outside theme panels in all display modes\nok 16 - primitive colors render once outside theme panels in all display modes\n  ---\n  duration_ms: 51.080781\n  type: 'test'\n  ...\n# Subtest: primitive filter works independently from semantic theme comparisons\nok 17 - primitive filter works independently from semantic theme comparisons\n  ---\n  duration_ms: 25.290544\n  type: 'test'\n  ...\n# Subtest: typographic scale uses existing dimensions, sorts sizes and rounds labels only\nok 18 - typographic scale uses existing dimensions, sorts sizes and rounds labels only\n  ---\n  duration_ms: 21.880769\n  type: 'test'\n  ...\n# Subtest: specimen properties round while exact size, line and tracking are retained\nok 19 - specimen properties round while exact size, line and tracking are retained\n  ---\n  duration_ms: 13.327908\n  type: 'test'\n  ...\n# Subtest: spacing ruler clearly separates presentation magnification from source distance\nok 20 - spacing ruler clearly separates presentation magnification from source distance\n  ---\n  duration_ms: 8.18857\n  type: 'test'\n  ...\n# Subtest: full displays both a capsule and a circle without changing the token\nok 21 - full displays both a capsule and a circle without changing the token\n  ---\n  duration_ms: 166.206044\n  type: 'test'\n  ...\n# Subtest: dark shadows use mapped inspection surfaces with unchanged shadow values\nok 22 - dark shadows use mapped inspection surfaces with unchanged shadow values\n  ---\n  duration_ms: 11.769106\n  type: 'test'\n  ...\n# Subtest: missing inspection mapping is reported only in elevation with original surface fallback\nok 23 - missing inspection mapping is reported only in elevation with original surface fallback\n  ---\n  duration_ms: 23.828427\n  type: 'test'\n  ...\n# Subtest: typographic scale falls back to existing style sizes without inventing steps\nok 24 - typographic scale falls back to existing style sizes without inventing steps\n  ---\n  duration_ms: 9.37517\n  type: 'test'\n  ...\n1..24\n# tests 24\n# suites 0\n# pass 24\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 868.591841\nAPROVADO: node --test-reporter=tap tests/storybook/adapters.test.mjs\nTAP version 13\n# Subtest: HTML adapter bundles and renders each story with the shared renderer\nok 1 - HTML adapter bundles and renders each story with the shared renderer\n  ---\n  duration_ms: 519.17203\n  type: 'test'\n  ...\n# Subtest: React adapter mounts all five stories and updates theme without changing the API\nok 2 - React adapter mounts all five stories and updates theme without changing the API\n  ---\n  duration_ms: 224.378333\n  type: 'test'\n  ...\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 749.490126\nAPROVADO: node --test-reporter=tap tests/document/render.test.mjs\nTAP version 13\n# Subtest: SSR works without browser globals and keeps readable values and source details\nok 1 - SSR works without browser globals and keeps readable values and source details\n  ---\n  duration_ms: 53.682613\n  type: 'test'\n  ...\n# Subtest: all five foundations mount with shared visuals, themes and no nested main or h1\nok 2 - all five foundations mount with shared visuals, themes and no nested main or h1\n  ---\n  duration_ms: 658.761715\n  type: 'test'\n  ...\n# Subtest: filter and theme selector remain functional, with adapted headings after redraw\nok 3 - filter and theme selector remain functional, with adapted headings after redraw\n  ---\n  duration_ms: 66.226755\n  type: 'test'\n  ...\n# Subtest: token changes propagate into visuals and labels without mutating source precision\nok 4 - token changes propagate into visuals and labels without mutating source precision\n  ---\n  duration_ms: 77.432583\n  type: 'test'\n  ...\n# Subtest: readable dimensions, typography and shadows do not dump JSON\nok 5 - readable dimensions, typography and shadows do not dump JSON\n  ---\n  duration_ms: 2.444751\n  type: 'test'\n  ...\n# Subtest: missing aliases and unsupported types remain visible beside valid values\nok 6 - missing aliases and unsupported types remain visible beside valid values\n  ---\n  duration_ms: 1.478334\n  type: 'test'\n  ...\n# Subtest: missing configuration, runtime errors and ready-to-pending updates stay explicit\nok 7 - missing configuration, runtime errors and ready-to-pending updates stay explicit\n  ---\n  duration_ms: 39.122951\n  type: 'test'\n  ...\n# Subtest: component examples render the supplied implementation, not a duplicate\nok 8 - component examples render the supplied implementation, not a duplicate\n  ---\n  duration_ms: 1.14721\n  type: 'test'\n  ...\n# Subtest: catalog references accept confirmed links and expose local paths without invented URLs\nok 9 - catalog references accept confirmed links and expose local paths without invented URLs\n  ---\n  duration_ms: 3.408159\n  type: 'test'\n  ...\n# Subtest: missing design guidance and examples never get default product decisions\nok 10 - missing design guidance and examples never get default product decisions\n  ---\n  duration_ms: 1.043209\n  type: 'test'\n  ...\n# Subtest: untrusted labels are escaped, aliases stay secondary and details are native\nok 11 - untrusted labels are escaped, aliases stay secondary and details are native\n  ---\n  duration_ms: 0.747173\n  type: 'test'\n  ...\n# Subtest: all shipped MDX templates compile and render on server with explicit pending content\nok 12 - all shipped MDX templates compile and render on server with explicit pending content\n  ---\n  duration_ms: 240.178375\n  type: 'test'\n  ...\n# Subtest: server markup hydrates without mismatch and preserves textual fallback outside the client gallery\nok 13 - server markup hydrates without mismatch and preserves textual fallback outside the client gallery\n  ---\n  duration_ms: 60.357059\n  type: 'test'\n  ...\n# Subtest: gallery controls retain associated labels and technical details remain closed native disclosures\nok 14 - gallery controls retain associated labels and technical details remain closed native disclosures\n  ---\n  duration_ms: 27.593424\n  type: 'test'\n  ...\n1..14\n# tests 14\n# suites 0\n# pass 14\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1241.988575\n",
+      "stderr": ""
+    },
+    {
+      "name": "distribution",
+      "command": [
+        "npm",
+        "run",
+        "test:distribution"
+      ],
+      "exit_code": 0,
+      "seconds": 10.977,
+      "stdout": "\n> test:distribution\n> python3 -m unittest discover -s tests -p test_distribution.py -v\n\n",
+      "stderr": "test_tarball_public_contract_and_broken_variants (test_distribution.DistributionTests.test_tarball_public_contract_and_broken_variants) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 10.809s\n\nOK\n"
+    },
+    {
+      "name": "installer",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_install.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.36,
+      "stdout": "",
+      "stderr": "test_copy_is_independent (test_install.InstallerTests.test_copy_is_independent) ... ok\ntest_existing_install_requires_update (test_install.InstallerTests.test_existing_install_requires_update) ... ok\ntest_invalid_arguments_and_project (test_install.InstallerTests.test_invalid_arguments_and_project) ... ok\ntest_lock_prevents_concurrent_install (test_install.InstallerTests.test_lock_prevents_concurrent_install) ... ok\ntest_missing_source_preserves_install (test_install.InstallerTests.test_missing_source_preserves_install) ... ok\ntest_modes_can_be_switched (test_install.InstallerTests.test_modes_can_be_switched) ... ok\ntest_refuses_destination_inside_source (test_install.InstallerTests.test_refuses_destination_inside_source) ... ok\ntest_refuses_foreign_and_broken_links (test_install.InstallerTests.test_refuses_foreign_and_broken_links) ... ok\ntest_refuses_parent_links (test_install.InstallerTests.test_refuses_parent_links) ... ok\ntest_refuses_unmanaged_directory_and_file (test_install.InstallerTests.test_refuses_unmanaged_directory_and_file) ... ok\ntest_relative_project (test_install.InstallerTests.test_relative_project) ... ok\ntest_separator_cannot_override_existing_destination (test_install.InstallerTests.test_separator_cannot_override_existing_destination) ... ok\ntest_symlink_reflects_source (test_install.InstallerTests.test_symlink_reflects_source) ... ok\ntest_update_preserves_local_changes_in_backup (test_install.InstallerTests.test_update_preserves_local_changes_in_backup) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.304s\n\nOK\n"
+    },
+    {
+      "name": "installer-syntax",
+      "command": [
+        "bash",
+        "-n",
+        "scripts/install.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.001,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "validator-venv",
+      "command": [
+        "python3",
+        "-m",
+        "venv",
+        "/vercel/sandbox/validator-venv"
+      ],
+      "exit_code": 0,
+      "seconds": 2.029,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "validator-dependency",
+      "command": [
+        "/vercel/sandbox/validator-venv/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "PyYAML"
+      ],
+      "exit_code": 0,
+      "seconds": 0.422,
+      "stdout": "Collecting PyYAML\n  Downloading pyyaml-6.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)\nDownloading pyyaml-6.0.3-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (794 kB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 794.2/794.2 kB 72.6 MB/s eta 0:00:00\nInstalling collected packages: PyYAML\nSuccessfully installed PyYAML-6.0.3\n",
+      "stderr": ""
+    },
+    {
+      "name": "skill",
+      "command": [
+        "/vercel/sandbox/validator-venv/bin/python",
+        "/vercel/sandbox/validation/quick_validate.py",
+        "skills/prismo"
+      ],
+      "exit_code": 0,
+      "seconds": 0.03,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    }
+  ],
+  "registry_dns_ok": true,
+  "python_tests": 236,
+  "javascript_tests": 53,
+  "source_hashes_after": {
+    "package.json": "c7f834708b14cbe12b35086074c02a1fbead48e417bc63820fa6391b0d7a5796",
+    "package-lock.json": "b07640b2e3f35c0e3f33c04edcddd70a333ccc535c6681d6c0cb2433a7db16ac",
+    "scripts/test_suite.py": "26104ac2cf1827ea9841ea3f8a41e13c042856d206470f631208a69ccefc018e",
+    "tests/test_suite_runner.py": "d873f84809a68c4fe7e240c8804afb8a885782b60ad883a21456a997d1362633",
+    "skills/prismo/SKILL.md": "cd9a58b95b15f7ef754aa4aafffff60d33fed97a7960624adf6cec1282212a30"
+  },
+  "status": "passed"
+}

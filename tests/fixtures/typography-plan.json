@@ -1,0 +1,14 @@
+{
+  "base": {"value": 16, "unit": "px"},
+  "ratio": 1.25,
+  "precision": 4,
+  "root_px": null,
+  "steps": {"small": -1, "base": 0, "large": 2},
+  "families": {"sans": ["Example Sans", "sans-serif"]},
+  "weights": {"regular": 400, "bold": 700},
+  "styles": {
+    "heading": {"family": "sans", "weight": "bold", "step": "large", "line_height": 1.2, "letter_spacing_em": -0.02},
+    "body": {"family": "sans", "weight": "regular", "step": "base", "line_height": 1.5, "letter_spacing_em": 0},
+    "label": {"family": "sans", "weight": "bold", "step": "small", "line_height": 1.25, "letter_spacing_em": 0.04}
+  }
+}

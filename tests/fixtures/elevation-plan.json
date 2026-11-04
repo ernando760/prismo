@@ -1,0 +1,18 @@
+{
+  "unit": "px",
+  "root_px": null,
+  "rounding": {"mode": "half_up", "increment": 0.25},
+  "opacity_precision": 4,
+  "levels": {
+    "none": [],
+    "low": [{"color": "#000000", "opacity": 0.12, "scale": 1, "inset": false, "offsetX": 0, "offsetY": 1, "blur": 2, "spread": 0}],
+    "medium": [{"color": "#000000", "opacity": 0.16, "scale": 1, "inset": false, "offsetX": 0, "offsetY": 2, "blur": 4, "spread": -0.5}],
+    "high": [{"color": "#000000", "opacity": 0.2, "scale": 2, "inset": false, "offsetX": 0, "offsetY": 3, "blur": 6, "spread": 0}]
+  },
+  "semantics": {
+    "flat": "{primitive.elevation.shadow.none}",
+    "card": "{primitive.elevation.shadow.low}",
+    "popover": "{primitive.elevation.shadow.medium}",
+    "dialog": "{primitive.elevation.shadow.high}"
+  }
+}

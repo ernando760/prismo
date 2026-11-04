@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+
+node_modules/
+
+# Local tooling, credentials and generated artifacts
+/.cache/
+/output/
+/.agents/
+/.codex/
+/.aws/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

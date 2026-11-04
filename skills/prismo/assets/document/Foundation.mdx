@@ -1,0 +1,50 @@
+---
+title: Fundação — título a definir
+---
+
+import {DocLayout, Lead, FoundationCatalog, TokenFacts, Example, Guidance, TechnicalDetails, CatalogLink, Pending} from './DocumentUI';
+
+{/* Trocar por imports das fontes reais; nunca colar valores de tokens aqui. */}
+export const source = null;
+export const mapping = null;
+export const foundation = undefined;
+export const semanticPaths = [];
+export const catalogUrl = undefined;
+
+<DocLayout>
+
+<Lead>Descreva a finalidade desta fundação a partir das decisões aprovadas e os problemas de uso que ela resolve.</Lead>
+
+## Explorar a fundação
+
+<FoundationCatalog tokens={source} config={mapping} section={foundation} />
+
+## Papéis semânticos e aplicação
+
+Explique quais papéis usar e em quais contextos, sem repetir a lista completa de primitivos.
+
+<TokenFacts tokens={source} paths={semanticPaths} />
+
+<Example caption="Substituir por aplicação existente, identificando tokens, contexto e tema.">
+  <Pending>Conectar um exemplo aprovado, sem criar outro componente de produto.</Pending>
+</Example>
+
+## Diretrizes de uso
+
+<Guidance />
+
+## Temas, acessibilidade e limites
+
+<Pending>Descrever diferenças confirmadas entre temas e plataformas, critérios aplicáveis e limitações; não declarar contraste/conformidade sem evidências.</Pending>
+
+## Referências
+
+<CatalogLink href={catalogUrl}>Explorar esta fundação no catálogo</CatalogLink>
+
+<TechnicalDetails>
+
+Indique caminhos das decisões e tokens, aliases relevantes, testes executados e pendências. A exploração acima mostra valores legíveis e detalhes expansíveis; não cole JSON bruto nesta página.
+
+</TechnicalDetails>
+
+</DocLayout>

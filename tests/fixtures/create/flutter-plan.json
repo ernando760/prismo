@@ -1,0 +1,24 @@
+{
+  "name": "DsButton",
+  "platform": "flutter",
+  "atomic": "atom",
+  "tokens": {"foreground": {"path": "semantic.light.text", "binding": "AppTokens.text"}},
+  "new_tokens": [],
+  "files": [
+    {"path": "lib/atoms/ds_button.dart", "action": "create", "role": "component"},
+    {"path": "widgetbook/lib/button_use_case.dart", "action": "create", "role": "catalog"},
+    {"path": "test/ds_button_test.dart", "action": "create", "role": "test"},
+    {"path": "docs/button.md", "action": "create", "role": "documentation"}
+  ],
+  "states": ["default", "disabled"],
+  "cases": [
+    {"name": "Acionar", "states": ["default"], "assertions": ["Expor label em Semantics", "Disparar callback uma vez"]},
+    {"name": "Desabilitado", "states": ["disabled"], "assertions": ["Não disparar callback"]}
+  ],
+  "checks": [
+    {"kind": "functional", "command": "flutter test test/ds_button_test.dart"},
+    {"kind": "accessibility", "command": "flutter test test/ds_button_accessibility_test.dart"}
+  ],
+  "catalog": {"tool": "widgetbook", "config": "widgetbook/lib/main.dart"},
+  "questions": []
+}

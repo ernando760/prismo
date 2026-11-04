@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prismo · teste do renderer de fundações</title>
+<body style="margin:0">
+<div id="catalog"></div>
+<script type="module">
+import { renderFoundations } from './catalog.mjs';
+import config from './catalog.config.mjs';
+const response = await fetch('./tokens.json');
+if (!response.ok) throw Error('Tokens de teste não encontrados');
+const tokens = await response.json();
+document.querySelector('#catalog').replaceChildren(renderFoundations(tokens, config, {
+  section: new URL(location.href).searchParams.get('section') || 'all',
+}));
+</script>
+</body>
+</html>

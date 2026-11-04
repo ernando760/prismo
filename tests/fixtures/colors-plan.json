@@ -1,0 +1,14 @@
+{
+  "palettes": {
+    "sample": {
+      "seed": "#ff0000",
+      "steps": {"100": 0.95, "300": 0.8, "500": 0.6, "700": 0.4, "900": 0.2}
+    }
+  },
+  "themes": {
+    "light": {"text": "primitive.sample.900", "surface": "primitive.sample.100"}
+  },
+  "pairs": [
+    {"foreground": "semantic.light.text", "background": "semantic.light.surface", "usage": "normal_text"}
+  ]
+}

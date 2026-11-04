@@ -1,0 +1,19 @@
+{
+  "radius": {
+    "base": {"value": 4, "unit": "px"},
+    "steps": {"none": 0, "sm": 1, "md": 2},
+    "rounding": {"mode": "half_up", "increment": 1}
+  },
+  "width": {
+    "base": {"value": 1, "unit": "px"},
+    "steps": {"none": 0, "thin": 1, "strong": 2},
+    "rounding": {"mode": "half_up", "increment": 0.5}
+  },
+  "full": true,
+  "bounds_px": {"width": 120, "height": 40},
+  "root_px": null,
+  "semantics": {
+    "radius": {"square": "{primitive.borders.radius.none}", "control": "{primitive.borders.radius.sm}", "card": "{primitive.borders.radius.md}", "pill": "{primitive.borders.radius.full}"},
+    "width": {"absent": "{primitive.borders.width.none}", "divider": "{primitive.borders.width.thin}", "emphasis": "{primitive.borders.width.strong}"}
+  }
+}

@@ -1,0 +1,53 @@
+---
+title: Componente — título a definir
+---
+
+import {DocLayout, Lead, Example, ExampleGrid, Guidance, TechnicalDetails, CatalogLink, Pending} from './DocumentUI';
+
+{/* Importar exemplos reais só quando compatíveis com SSR/providers do portal. */}
+export const catalogUrl = undefined;
+
+<DocLayout>
+
+<Lead>Apresente finalidade, nível Atomic e o contexto de uso confirmado nas fontes.</Lead>
+
+## Em uso
+
+<Example caption="Exemplo existente com seu contexto e tema." />
+
+<CatalogLink href={catalogUrl}>Experimentar o componente no catálogo</CatalogLink>
+
+## Anatomia
+
+<Pending>Conectar exemplo/figura existente e descrever partes, slots e responsabilidades. A numeração só deve corresponder às partes reais.</Pending>
+
+## Variantes e tamanhos
+
+<ExampleGrid>
+  <Example caption="Variante: nome e finalidade a confirmar." />
+  <Example caption="Tamanho: nome e contexto a confirmar." />
+</ExampleGrid>
+
+## Estados e comportamento
+
+<Pending>Mostrar estados reais lado a lado quando útil. Explicar transições, eventos, controle de estado, foco e interações disponíveis.</Pending>
+
+## Uso recomendado
+
+<Guidance />
+
+## Acessibilidade
+
+<Pending>Registrar semântica, nome acessível, teclado, foco e responsabilidades do consumidor, com testes e limites observados.</Pending>
+
+## API e exemplo de código
+
+<Pending>Referenciar API canônica/gerada com props, tipos, defaults, eventos e slots. Incluir exemplo mínimo com imports reais, sem copiar uma API que já tem fonte mantida.</Pending>
+
+<TechnicalDetails summary="Implementação, tokens e limitações">
+
+Referencie implementação, tokens/bindings semânticos, histórias/use-cases e testes. Documente plataformas suportadas, limitações e informações ainda ausentes, sem duplicar a implementação.
+
+</TechnicalDetails>
+
+</DocLayout>
