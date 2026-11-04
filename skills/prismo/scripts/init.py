@@ -3,6 +3,7 @@
 import argparse
 import json
 import strict_json
+from naming import policy
 from pathlib import Path, PurePosixPath
 import sys
 
@@ -19,7 +20,7 @@ def validate(plan):
         raise ValueError('Plano deve ser um objeto JSON.')
     required = {'name', 'platforms', 'identity', 'accessibility', 'documentation',
                 'evidence', 'reuse', 'pending', 'paths'}
-    if set(plan) != required:
+    if set(plan) - {'naming'} != required:
         raise ValueError('Campos esperados: ' + ', '.join(sorted(required)))
     if not all(text(plan[key]) for key in ('name', 'identity', 'accessibility')):
         raise ValueError('Nome, identidade e acessibilidade precisam de decisões explícitas.')
@@ -36,6 +37,8 @@ def validate(plan):
     for key in ('evidence', 'reuse', 'pending'):
         if not isinstance(plan[key], list) or not all(text(v) for v in plan[key]):
             raise ValueError(f'{key} deve ser lista de textos.')
+    if 'naming' in plan:
+        policy(plan['naming'])
     paths = plan['paths']
     if (not isinstance(paths, dict) or not {'decisions', 'tokens', 'components'} <= set(paths)
             or set(paths) - {'decisions', 'tokens', 'components', 'tokens_existing', 'packages', 'documentation'}):

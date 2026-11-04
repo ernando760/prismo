@@ -1,7 +1,21 @@
 # Changelog
 
-This file records published versions of Prismo. Pre-release entries describe
-experimental releases and retain their documented support limitations.
+This file records published versions and prepared release candidates of Prismo.
+Pre-release entries describe experimental scope and retain support limitations.
+
+## 0.1.0-alpha.2 — release candidate
+
+- Add automatic, additive foundations execution with a persistent checklist,
+  ordered stages, safe resume, conflict detection, and interrupted transaction recovery.
+- Add optional recommended and custom token naming policies across the six operations,
+  preserving existing names and behavior when no policy is configured.
+- Block other foundations while an interrupted transaction is pending and recover
+  the affected stage before other requested work.
+- Document conversational coverage, legacy compatibility, and experimental limits.
+
+The candidate remains experimental: DTCG and audit coverage are partial; visual,
+accessibility, platform, and broader conversational validation remain necessary.
+See the [alpha.2 release notes](docs/experimental-release-notes-0.1.0-alpha.2.md).
 
 ## 0.1.0-alpha.1 — 2026-11-04
 

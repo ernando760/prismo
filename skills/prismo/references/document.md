@@ -1,5 +1,7 @@
 # document — documentação do Design System
 
+Consulte [naming.md](naming.md) quando houver convenção de tokens a registrar ou aplicar; preserve decisões e nomes existentes.
+
 ## Investigar o escopo e as fontes
 
 Leia as instruções locais e o registro de decisões aprovado, normalmente
@@ -118,3 +120,5 @@ O inventário apresenta `declared_documentation` com as raízes registradas e su
 existência. Antes de propor instalação use o caminho da ferramenta correspondente;
 a presença do diretório não comprova configuração nem build. Divergências com uma
 instalação existente exigem decisão explícita, não migração automática.
+
+Mostre nomes e significados somente a partir das fontes de tokens e decisões aprovadas; se não houver significado documentado, registre a lacuna.

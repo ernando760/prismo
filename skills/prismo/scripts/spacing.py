@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Spacing: escalas e aliases DTCG determinísticos; preview sem escrita."""
 import argparse
+from naming import path as naming_path
 import copy
 from decimal import Decimal, ROUND_HALF_UP, ROUND_FLOOR, ROUND_CEILING, localcontext
 import json
@@ -119,7 +120,7 @@ def calculate(base, multiplier, rounding):
     return _calculate(number(base, True), number(multiplier), rounding)
 
 
-def build(plan, existing=None):
+def build(plan, existing=None, naming=None):
     if not isinstance(plan, dict) or set(plan) != {'base', 'progression', 'rounding', 'root_px', 'steps', 'semantics'}:
         raise ValueError('Plano exige base, progression, rounding, root_px, steps e semantics.')
     base = dimension(plan['base']); number(base['value'], True)
@@ -159,7 +160,7 @@ def build(plan, existing=None):
             return
         if deduplicate and not alias(value):
             for candidate in tokens:
-                if candidate.startswith('primitive.spacing.') or candidate in reuse_sources:
+                if candidate.startswith(naming_path('primitive', 'spacing', naming) + '.') or candidate in reuse_sources:
                     try:
                         equal = resolve(tokens, candidate) == expected
                     except ValueError:
@@ -196,7 +197,7 @@ def build(plan, existing=None):
             else:
                 raw, size = calculate(base['value'], step, plan['rounding'])
             value = {'value': size, 'unit': base['unit']}
-        path = f'primitive.spacing.{key}'
+        path = naming_path('primitive', f'spacing.{key}', naming)
         emit(path, value, deduplicate=True)
         final_value = resolve(tokens, path)
         scale.append({'token': path, 'raw_value': raw, 'dimension': final_value, **projection(final_value)})
@@ -207,7 +208,7 @@ def build(plan, existing=None):
             name(role)
             if not alias(reference):
                 raise ValueError('Papéis semânticos exigem aliases {caminho}.')
-            path = f'semantic.spacing.{category}.{role}'
+            path = naming_path('semantic', f'spacing.{category}.{role}', naming)
             emit(path, reference)
             final_value = resolve(tokens, path)
             usages.append({'token': path, 'dimension': final_value, **projection(final_value)})

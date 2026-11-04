@@ -1,5 +1,7 @@
 # audit — qualidade e consistência, somente leitura
 
+Consulte [naming.md](naming.md) quando houver convenção de tokens a registrar ou aplicar; preserve decisões e nomes existentes.
+
 ## Investigar com escopo
 
 Leia instruções locais e decisões aprovadas, normalmente
@@ -141,3 +143,5 @@ zoom/teclado, semântica Flutter, revisão visual dos temas ou auditoria complet
 Relatório limita 100 achados e 10 registros de pares (falhas/pendências primeiro),
 prioriza severidade e informa totais/omitidos/escopo. Restrinja a entrada para obter
 detalhes dos pares omitidos, sem repetir checagens já conclusivas por padrão.
+
+Com política registrada, avalie nomes separadamente do DTCG. Aliases com o mesmo alvo são candidatos para revisão de intenção, não redundâncias comprovadas.

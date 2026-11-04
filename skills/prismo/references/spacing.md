@@ -1,5 +1,17 @@
 # foundations — Spacing
 
+Siga primeiro [foundations.md](foundations.md) para escopo, checklist, origens e
+execução automática. Este guia define as decisões e validações específicas.
+
+## Padrões seguros
+
+Sem escala, densidade ou instruções existentes, use o plano do exemplo abaixo:
+base 4px, progressão linear 0/1, arredondamento half_up a 1px, passos
+none/sm/md/lg/xl e os usos gap.compact/padding.container/margin.section.
+Registre cada campo adotado como `default`; não introduza `rem`, outra densidade
+ou outros papéis. Registre inspeção de layout como pendente. Escalas ou restrições
+existentes prevalecem; conflito de densidade/unidade exige esclarecimento.
+
 ## Investigar e esclarecer
 
 Leia `design-system/decisions.json` ou o caminho documentado pelo projeto, e os
@@ -16,12 +28,12 @@ legados automaticamente.
 Pergunte apenas o que o projeto/conversa não resolver, em grupos objetivos:
 
 - Escala: base/unidade, progressão linear ou personalizada, passos necessários e
-  usos observados. A base 4px é uma opção, não decisão automática.
+  usos observados. Use a base 4px padrão somente nas lacunas sem restrições.
 - Arredondamento: incremento e modo; confirme se pequenas diferenças ou redução
   para zero são aceitáveis. Justifique valores propostos com padrões do projeto.
 - Usos/plataformas: mapeamento gap/padding/margin, densidade e restrições existentes;
   para rem, raiz explícita de referência para converter em pixels lógicos Flutter.
-Não repita respostas dadas nem invente parâmetros para completar um plano.
+Não repita respostas dadas; use apenas evidências ou os padrões seguros documentados.
 
 ## Calcular em preview
 
@@ -60,7 +72,7 @@ python3 /caminho/da/skill/scripts/spacing.py --plan /tmp/spacing-plan.json
 python3 /caminho/da/skill/scripts/spacing.py --plan /tmp/spacing-plan.json --existing /projeto/tokens.json
 ```
 
-Guarde o plano fora do consumidor até aprovação. A saída é somente stdout e o
+Guarde a entrada temporária fora do consumidor. A saída é somente stdout e o
 helper não altera arquivos. Exit 0 significa cálculo e validação do subconjunto
 suportado; erros retornam 1 sem preview parcial. Não comprova layout ou aprovação.
 
@@ -104,14 +116,16 @@ arquivos, não grave o documento combinado por cima de um arquivo parcial.
 Validação limita-se às dimensões/aliases emitidos ou reutilizados; não é um
 validador DTCG completo nem teste de acessibilidade/reflow.
 
-## Aprovar, persistir e verificar
+## Validar, persistir e verificar
 
 Apresente base, unidade, progressão e justificativas, regras de arredondamento,
 tabela bruto/final, aliases, mapeamento semântico e projeções Web/Flutter. Destaque
 valores colapsados pelo arredondamento e pendências de layout. Mostre caminhos e
 diff dos tokens e do registro, preservando integralmente as outras fundações.
 
-Após aprovação, grave somente o aprovado e acrescente `foundations.spacing` ao
+Use o checklist de `foundations.md` para persistir adições e registrar suas origens
+sem aprovação repetida. Conflitos exigem esclarecimento antes de alterar.
+Após validar, grave somente o solicitado e acrescente `foundations.spacing` ao
 registro existente, sem substituir `init`, Colors ou Typography. Registre plano,
 evidências, justificativas, caminhos, reuso, conversão, arredondamento, verificações
 e pendências. Releia os arquivos, resolva aliases e recalcule com o plano aprovado.

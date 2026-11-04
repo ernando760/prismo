@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Colors: preview JSON determinístico. Não escreve tokens ou decisões no projeto."""
 import argparse
+from naming import path as naming_path
 import copy
 import json
 import strict_json
@@ -155,7 +156,7 @@ def put(tree, path, token):
     node[parts[-1]] = token
 
 
-def build(plan, existing=None):
+def build(plan, existing=None, naming=None):
     if not isinstance(plan, dict) or set(plan) != {'palettes', 'themes', 'pairs'}:
         raise ValueError('Plano exige palettes, themes e pairs.')
     if not isinstance(plan['palettes'], dict) or not isinstance(plan['themes'], dict) or not plan['themes']:
@@ -180,7 +181,7 @@ def build(plan, existing=None):
             name(step); number(level, 0, 1)
             raw, mapped_lch, mapped = gamut_map(level, chroma, hue)
             final = quantize(raw)
-            path = f'primitive.{palette}.{step}'
+            path = naming_path('primitive', f'{palette}.{step}', naming)
             duplicate = None
             for candidate, (_, token_type) in tokens.items():
                 if token_type == 'color':
@@ -211,7 +212,7 @@ def build(plan, existing=None):
             if not isinstance(target, str):
                 raise ValueError('Papel semântico exige caminho de token.')
             resolve(tokens, target)
-            path = f'semantic.{theme}.{role}'
+            path = naming_path('semantic', f'{theme}.{role}', naming)
             put(tree, path, {'$type': 'color', '$value': '{' + target + '}'})
             tokens = flatten(tree)
     if not isinstance(plan['pairs'], list) or not plan['pairs']:

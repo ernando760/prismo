@@ -1,5 +1,7 @@
 # create — componentes do Design System
 
+Consulte [naming.md](naming.md) quando houver convenção de tokens a registrar ou aplicar; preserve decisões e nomes existentes.
+
 Fluxo: **Investigar → Projetar → Aprovar → Implementar → Inspecionar → Validar**.
 O conhecimento visual é interno ao Prismo; não exija nem invoque skills externas
 como requisito de criação.
@@ -190,3 +192,5 @@ público; em Web confira manifesto, exports e resolução do builder. Execute ap
 comandos aprovados e disponíveis; não conte leitura de arquivo ou import declarado
 como prova de resolução. Registre bloqueios, inclusive SDK ausente. Não copie a
 implementação do componente para stories ou use-cases.
+
+Reutilize tokens existentes pela intenção; justifique novos tokens específicos de componente e revise sua nomenclatura conforme a política aprovada.

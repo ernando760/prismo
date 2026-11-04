@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Valida tokens e calcula mudanças/impactos em leitura. Não persiste ou aprova planos."""
 import argparse
+from naming import from_record as naming_from_record, diagnose as naming_diagnose, alias_candidates
 import copy
 import json
 import os
@@ -373,9 +374,13 @@ def main():
         root = args.project.resolve(strict=True)
         if not root.is_dir():
             raise ValueError('Projeto deve ser diretório.')
+        decision_path = relative(root, args.decisions)
+        record = read(decision_path) if decision_path.is_file() else {}
+        naming = naming_from_record(record)
         filenames = args.source
         if not filenames:
-            record = read(relative(root, args.decisions))
+            if not record:
+                raise ValueError('Registro de decisões não encontrado.')
             filenames = [find_token_source(record.get('decisions', record), root)]
         if len(filenames) != len(set(filenames)):
             raise ValueError('Fonte repetida.')
@@ -390,8 +395,16 @@ def main():
             result = preview(sources, plan)
             result['consumer_impact'] = impact(root, sources, result['affected_tokens'], plan['bindings'], args.scan)
             if not args.full:
+                result['_naming_paths'] = [path for tree in result['files'].values() for path in index(tree)]
+                result['_naming_aliases'] = alias_candidates({path: value for tree in result['files'].values() for path, value in index(tree).items()})
                 del result['files']
                 result['status'] = 'no_changes' if not result['changes'] else 'proposal_ready'
+        if naming:
+            paths = tokens if args.mode == 'validate' else result.get('_naming_paths', [path for tree in result.get('files', {}).values() for path in index(tree)])
+            result['naming'] = naming_diagnose(paths, naming)
+            result['naming']['alias_candidates'] = (alias_candidates(tokens) if args.mode == 'validate' else result.get('_naming_aliases', alias_candidates({path: value for tree in result.get('files', {}).values() for path, value in index(tree).items()})))
+        result.pop('_naming_paths', None)
+        result.pop('_naming_aliases', None)
         print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
         return 0
     except (OSError, ValueError, TypeError, KeyError, AttributeError, RecursionError) as error:

@@ -1,6 +1,6 @@
 # Prismo
 
-Versão experimental: `v0.1.0-alpha.1`.
+Versão experimental: `v0.1.0-alpha.2`.
 
 Agent Skill experimental para criar e evoluir Design Systems Web, Flutter e
 Marketing no Codex. Uma única Skill, com referências sob demanda e helpers Python
@@ -11,7 +11,7 @@ baseados na biblioteca padrão, sem orquestradores ou múltiplos agentes.
 | Operação | Escopo e referência |
 | --- | --- |
 | `init` | Investiga e propõe decisões/caminhos; o helper materializa somente o plano aprovado. [Guia](skills/prismo/references/init.md) |
-| `foundations` | Colors, Typography, Spacing, Borders e Elevation, com cálculos determinísticos e prévias DTCG. [Colors](skills/prismo/references/colors.md), [Typography](skills/prismo/references/typography.md), [Spacing](skills/prismo/references/spacing.md), [Borders](skills/prismo/references/borders.md), [Elevation](skills/prismo/references/elevation.md) |
+| `foundations` | Criação automática completa, parcial ou individual de Colors, Typography, Spacing, Borders e Elevation, com checklist e retomada. [Fluxo](skills/prismo/references/foundations.md) |
 | `tokens` | Validação parcial DTCG, prévia de alterações, aliases, dependentes e busca de impacto. [Guia](skills/prismo/references/tokens.md) |
 | `create` | Fluxo guiado de componentes Web/Flutter: investigar, projetar, aprovar, implementar, inspecionar e validar. O helper revisa o plano. [Guia](skills/prismo/references/create.md) |
 | `document` | Fluxo guiado de documentação no Docusaurus, com inventário, templates e reutilização das fontes existentes. [Guia](skills/prismo/references/document.md) |
@@ -23,7 +23,10 @@ A [visualização de fundações no Storybook](skills/prismo/references/storyboo
 ferramentas conforme a plataforma e a necessidade do projeto.
 
 A Skill preserva arquitetura e decisões existentes. Mudanças no consumidor exigem
-proposta/diff e aprovação explícita. Ferramentas de documentação e catálogo não são
+proposta/diff e aprovação explícita, exceto as adições de `foundations` autorizadas
+pelo pedido de criação, com decisões existentes, instruções e padrões seguros.
+Conflitos e escolhas essenciais ausentes exigem esclarecimento.
+Ferramentas de documentação e catálogo não são
 instaladas automaticamente. `proposal_ready` e previews dos helpers são evidências
 de planejamento; validações só podem ser declaradas após execução.
 
@@ -108,7 +111,10 @@ não aparecer, reinicie a sessão. Exemplos:
 
 ```text
 $prismo init
+$prismo foundations
+$prismo foundations colors spacing
 $prismo foundations elevation
+$prismo crie apenas tipografia e bordas
 $prismo tokens validar as fontes existentes
 $prismo create NomeDoComponente
 $prismo document as fundações
@@ -129,10 +135,40 @@ projetos. Veja o [contrato de caminhos](skills/prismo/references/project-path-co
 Os helpers aceitam `--help`; use `--decisions` quando o registro não estiver no
 caminho padrão e `--package-dir` nos helpers que oferecem seleção de pacote.
 
-As prévias das fundações e de tokens são resumidas por padrão; `--full` inclui o
-documento completo. Os helpers de foundations/tokens/create/document/audit não
-persistem mudanças de design. `init --apply` cria arquivos somente após aprovação.
-O agente persiste os demais diffs aprovados e executa as verificações pertinentes.
+`foundations` sem nomes cria as cinco fundações; com nomes ou linguagem natural,
+executa somente o conjunto solicitado, na ordem Colors → Typography → Spacing →
+Borders → Elevation. Uma transação interrompida é recuperada antes das demais
+etapas, mesmo quando aparece depois nessa ordem. Antes de cada etapa, consulta a
+referência, tokens e decisões.
+O helper `scripts/foundations.py` reutiliza os cálculos individuais, persiste adições
+e registra origens (`user`, `existing`, `default`), validações e pendências em
+`foundations-plan.json`, ao lado de `decisions.json`. Uma retomada preserva etapas
+concluídas e decisões; falhas interrompem a sequência e ficam registradas.
+Não há aprovação repetida de padrões seguros; marca, fontes e conflitos sem
+resposta continuam exigindo esclarecimento. Transações pendentes em qualquer etapa
+bloqueiam pedidos que omitam sua recuperação; arquivos alterados externamente
+exigem investigação. Veja o [guia](skills/prismo/references/foundations.md).
+
+### Nomenclatura de tokens
+
+A política opcional `decisions.naming` registra a convenção aprovada no próprio
+registro de decisões. `recommended` usa os prefixos padrão `primitive`, `semantic`
+e `component`; `custom` permite definir prefixos por nível e vocabulário orientativo.
+O `init` pode registrar a política e as demais operações a consultam para gerar,
+revisar ou documentar nomes conforme seu escopo. Os aliases dos planos de
+`foundations` devem apontar para os caminhos reais da política escolhida.
+
+Projetos sem `decisions.naming` mantêm os caminhos e o comportamento anteriores;
+não há renomeação nem migração automática. Mudanças de política, colisões e nomes
+legados ambíguos exigem revisão. A classificação de nomes e o vocabulário são
+orientações independentes da validação DTCG e podem exigir análise manual. Consulte
+[política de nomenclatura](skills/prismo/references/naming.md).
+
+As prévias dos helpers individuais de fundações e de tokens são resumidas por
+padrão; `--full` inclui o documento completo. Esses helpers de cálculo e os de
+tokens/create/document/audit não persistem mudanças de design. `init --apply`
+cria arquivos somente após aprovação. O agente persiste os demais diffs aprovados
+e executa as verificações pertinentes.
 
 ## Desenvolvimento e validação
 
@@ -175,14 +211,17 @@ com lifecycle do esbuild, e a suíte em sandbox Linux com Node 24.22.1/npm 11.19
 Os bloqueios locais anteriores (DNS e spawnSync EPERM) foram diagnosticados como
 restrições do ambiente. Resultados e logs estão preservados no checklist abaixo.
 Os resultados em `tests/*-results.md` e `docs/*-checklist.md` são registros históricos,
-com limites da execução original. O
-[checklist desta preparação](docs/experimental-release-checklist.md) registra a
-validação atual e eventuais bloqueios.
+com limites da execução original. O [checklist da primeira release](docs/experimental-release-checklist.md) é
+histórico; a [validação da alpha.2](docs/evidencias-alpha2/RESULTADOS.md) registra
+os cenários e verificações desta candidata.
 
 ## Limites de uso experimental
 
-- Uso acompanhado: decisões/diffs precisam de aprovação. A execução conversacional
-  completa e a descoberta automática em sessão nova ainda não foram comprovadas.
+- Uso acompanhado: decisões/diffs precisam de aprovação fora da automação aditiva
+  de `foundations`; nela, escolhas essenciais ausentes e conflitos exigem diálogo.
+  Sessões novas exercitaram invocação explícita, init, as cinco fundações,
+  nomenclatura custom e retomada legada em consumidores sintéticos. Descoberta
+  automática e todos os fluxos conversacionais em projetos reais não foram validados.
 - `create` revisa cobertura declarada; `distribution` é opcional para planos legados.
   O agente deve validar cada pacote real conforme o [guia Web](skills/prismo/references/create-web.md).
   O smoke da suíte é sintético e não certifica pacotes dos POCs ou outros consumidores.
@@ -205,6 +244,6 @@ validação atual e eventuais bloqueios.
 - Marketing participa do escopo de decisões, fundações e documentação; não possui
   gerador de componentes próprio. `create` implementa Web ou Flutter.
 
-Consulte as [notas preparatórias da primeira release experimental](docs/experimental-release-notes.md)
-para capacidades, cenários ainda não comprovados e condições de liberação.
+Consulte as [notas da candidata alpha.2](docs/experimental-release-notes-0.1.0-alpha.2.md)
+para capacidades, cenários exercitados e limitações.
 Consulte o [CHANGELOG](CHANGELOG.md) para o histórico das versões.

@@ -2,6 +2,10 @@
 
 O registro `decisions.json` existente continua sendo a fonte de configuração; o caminho é escolhido no init e informado por `--decisions` nas operações. Na ausência de indicação permanece `design-system/decisions.json`. Não há busca automática de registros alternativos.
 
+`foundations` mantém seu checklist `foundations-plan.json` no mesmo diretório do
+registro escolhido e usa a fonte única de tokens registrada. O checklist não
+substitui `decisions.json`; não exige novos campos em `decisions.paths`.
+
 O formato `prismo_version: 1` continua válido. A extensão opcional `decisions.paths` acrescenta `packages` e `documentation` sem alterar os campos legados. Todos os caminhos locais são relativos à raiz do projeto, inclusive quando ela é o próprio pacote; `.` representa essa raiz para pacotes ou aplicações de documentação existentes. Exemplos:
 
 ```json

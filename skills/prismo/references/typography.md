@@ -1,11 +1,25 @@
 # foundations — Typography
 
+Siga primeiro [foundations.md](foundations.md) para escopo, checklist, origens e
+execução automática. Este guia define as decisões e validações específicas.
+
+## Padrões seguros
+
+Famílias/fallbacks, pesos realmente disponíveis e idiomas/scripts são essenciais:
+reutilize evidências ou pergunte, sem baixar/escolher uma fonte de marca. Resolvidas
+essas escolhas e sem escala/estilos existentes, use o exemplo abaixo como padrão
+estrutural: base 16px, razão 1.25, precisão 4, passos base/large, heading/body,
+line-height 1.2/1.5 e tracking -0.02/0. Registre esses parâmetros como `default` e
+famílias/pesos como `user`/`existing`; não adote a família fictícia “Example Sans”.
+Tracking e métricas ficam pendentes de inspeção real. Não imponha `rem` nem uma
+raiz de conversão. Estilos adicionais só se solicitados ou evidenciados.
+
 ## Investigar antes de propor
 
 Leia `design-system/decisions.json` (ou caminho documentado pelo projeto) e os
 arquivos de tokens indicados nele. Sem registro, informe a ausência e proponha
 `init`, sem inicializar silenciosamente. Preserve integralmente Colors e as
-decisões anteriores. Carregue apenas esta referência para Typography; não execute
+decisões anteriores. Carregue esta referência antes de Typography; não execute
 Colors nem recalcule outras fundações se isso não foi solicitado.
 
 Busque de forma direcionada famílias, fallbacks, arquivos de fontes, pesos,
@@ -28,8 +42,8 @@ Resolva apenas lacunas essenciais, com perguntas agrupadas:
 - Plataformas: reutilize o escopo aprovado. Para `rem`, confirme o tamanho de raiz
   usado como referência de conversão para Flutter; não imponha uma raiz ao CSS.
 
-Não repita respostas já fornecidas. Se o usuário ainda não escolheu famílias ou
-parâmetros essenciais, permaneça em investigação/diálogo, sem inventá-los.
+Não repita respostas já fornecidas. Sem famílias/pesos ou outros parâmetros
+essenciais que os padrões seguros não resolvam, permaneça em investigação/diálogo.
 
 ## Plano e cálculo determinístico
 
@@ -53,7 +67,7 @@ Plano ilustrativo reduzido (não uma recomendação de identidade):
 }
 ```
 
-Guarde o plano temporariamente fora do consumidor enquanto não aprovado.
+Guarde a entrada temporária fora do consumidor; o checklist preserva o plano usado.
 
 ```bash
 python3 /caminho/da/skill/scripts/typography.py --plan /tmp/typography-plan.json
@@ -131,7 +145,7 @@ verifique resize a 200% (1.4.4) e, nos contextos aplicáveis, override de line-h
 1.5, tracking 0.12em, word-spacing 0.16em e espaço após parágrafos 2em sem perda
 (1.4.12). O script não mede layout, clipping ou conformidade desses critérios.
 
-## Aprovar e persistir
+## Validar e persistir
 
 Apresente base/razão/unidades/arredondamento e justificativas, tabela da escala,
 famílias/pesos, heading/body/label solicitados com tamanho, altura de linha e
@@ -139,13 +153,13 @@ tracking, aliases reutilizados e projeções Web/Flutter. Inclua limites e pend�
 amostras visuais quando houver fontes e ambiente para renderizá-las. Não declare
 validação visual se apenas calculou números.
 
-Mostre caminhos e diff proposto de tokens e decisões, sem mudanças em Colors.
-Aguarde aprovação explícita dos valores/estilos/diff antes de persistir; mudanças
-na proposta exigem nova aprovação. Após aprovação, grave somente os tokens
-aprovados e acrescente `foundations.typography` no registro, preservando `init`,
+Use o checklist de `foundations.md` para persistir adições e registrar suas origens
+sem aprovação repetida. Conflitos exigem esclarecimento antes de alterar.
+Após validar, grave somente os tokens solicitados e acrescente
+`foundations.typography` no registro, preservando `init`,
 `foundations.colors` e outras seções. Registre plano, fontes/evidências, justificativas,
 caminhos, aliases, arredondamento, conversão de unidade, verificações executadas e
-pendências. Não instale fontes ou ferramentas como consequência dessa aprovação.
+pendências. Não instale fontes ou ferramentas como consequência da criação de fundações.
 
 Leia de volta os arquivos finais, resolva os aliases tipográficos e recalcule
 usando o plano aprovado e os tokens persistidos. Confira o diff para garantir

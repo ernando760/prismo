@@ -1,5 +1,17 @@
 # foundations — Borders
 
+Siga primeiro [foundations.md](foundations.md) para escopo, checklist, origens e
+execução automática. Este guia define as decisões e validações específicas.
+
+## Padrões seguros
+
+Sem convenções ou instruções existentes, use o exemplo abaixo com `full: false`,
+`bounds_px: null` e sem o papel `pill`: raio none/control (0/4px), espessura thin
+(1px), rounding half_up a 1px/0.5px e usos square/control/divider. Registre `default`
+e inspeção visual pendente. Não invente dimensões de componentes nem cápsulas;
+full/hairline solicitados sem contexto exigem esclarecimento. Não gere cor ou
+estilo de traço. Reutilize convenções existentes antes desses padrões.
+
 ## Investigar e esclarecer
 
 Leia `design-system/decisions.json` (ou caminho documentado) e os tokens indicados.
@@ -57,7 +69,7 @@ python3 /caminho/da/skill/scripts/borders.py --plan /tmp/borders-plan.json
 python3 /caminho/da/skill/scripts/borders.py --plan /tmp/borders-plan.json --existing /projeto/tokens.json
 ```
 
-Guarde o plano fora do consumidor até aprovação. A saída é somente stdout;
+Guarde a entrada temporária fora do consumidor. A saída é somente stdout;
 exit 0 significa cálculo/validação do subconjunto suportado, não aprovação visual.
 Erros retornam 1 sem preview parcial. Não há modo de escrita.
 
@@ -95,7 +107,7 @@ contextual separado, sem confundi-lo com ausência. Espessuras positivas não
 escolhem cor ou estilo; reutilize os existentes. O helper não monta composite
 DTCG border incompleto nem implementa componentes, clipping ou animação.
 
-## Reutilizar, aprovar e registrar
+## Reutilizar, validar e registrar
 
 Passos podem ser aliases para dimensões existentes, preservadas sem arredondar;
 `steps: {}` permite só reutilizar escalas. `full: false` não apaga nada e permite
@@ -113,11 +125,10 @@ o DTCG inteiro, layout ou acessibilidade. Raio não comprova tamanho de alvo e
 espessura isolada não comprova contraste; não recalcule Colors nesta operação.
 
 Apresente bases, passos, justificativas, bruto/final, aliases, usos, regra full,
-projeções, pendências e diff de caminhos/tokens/decisões antes de gravar. Aguarde
-aprovação explícita; mudanças na proposta exigem nova aprovação. O pedido genérico
-de Borders não aprova valores ainda desconhecidos.
+projeções e pendências. Use o checklist de `foundations.md` para persistir adições
+e registrar suas origens sem aprovação repetida. Conflitos exigem esclarecimento.
 
-Após aprovação, persista só o aprovado e acrescente `foundations.borders` ao registro,
+Após validar, persista só o solicitado e acrescente `foundations.borders` ao registro,
 preservando todas as seções anteriores. Registre plano, evidências, justificativas,
 caminhos, reuso, arredondamento, interpretação de full/zero, conversão e limitações.
 Releia tokens finais, resolva aliases, recalcule com o plano aprovado e confira o

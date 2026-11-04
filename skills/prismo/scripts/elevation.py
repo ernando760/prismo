@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Elevation: sombras DTCG e projeções de plataforma, apenas preview."""
 import argparse
+from naming import path as naming_path
 import copy
 from decimal import Decimal, ROUND_HALF_UP, localcontext
 import json
@@ -157,7 +158,7 @@ def semantic_aliases(semantics, prefix=()):
             raise ValueError('Semânticos exigem aliases {caminho} ou grupos não vazios.')
 
 
-def build(plan, existing=None):
+def build(plan, existing=None, naming=None):
     required = {'unit', 'root_px', 'rounding', 'opacity_precision', 'levels', 'semantics'}
     if not isinstance(plan, dict) or set(plan) != required:
         raise ValueError('Plano exige unit, root_px, rounding, opacity_precision, levels e semantics.')
@@ -186,7 +187,7 @@ def build(plan, existing=None):
             return '{' + path + '}'
         if not alias(value):
             for candidate in tokens:
-                if candidate.startswith('primitive.elevation.') and tokens[candidate][0] == kind:
+                if candidate.startswith(naming_path('primitive', 'elevation', naming) + '.') and tokens[candidate][0] == kind:
                     try:
                         equal = resolve(tokens, candidate, kind) == expected
                     except ValueError:
@@ -222,7 +223,7 @@ def build(plan, existing=None):
                 final_color['alpha'] = alpha_product(base_color['alpha'], config['opacity'], plan['opacity_precision'])
                 # Preserve alias da cor de origem quando o alpha não muda.
                 color_value = config['color'] if alias(config['color']) and final_color == base_color else final_color
-                color_path = f'primitive.elevation.color.{level}.layer{i}'
+                color_path = naming_path('primitive', f'elevation.color.{level}.layer{i}', naming)
                 if color_path not in tokens:
                     created_colors.add(color_path)
                 color_alias = emit(color_path, 'color', color_value)
@@ -232,7 +233,7 @@ def build(plan, existing=None):
                 value.append(layer)
         else:
             raise ValueError('Nível exige lista de camadas ou alias de shadow existente.')
-        path = f'primitive.elevation.shadow.{level}'
+        path = naming_path('primitive', f'elevation.shadow.{level}', naming)
         reference = emit(path, 'shadow', value)
         final = checked(reference, 'shadow', tokens)
         if level == 'none' and final != []:
@@ -246,7 +247,7 @@ def build(plan, existing=None):
         if any(parent in paths for parent in ('.'.join(role.split('.')[:i]) for i in range(1, len(role.split('.'))))):
             raise ValueError('Semântico usado como token e grupo: ' + role)
     for role, reference in semantics:
-        path = f'semantic.elevation.{role}'
+        path = naming_path('semantic', f'elevation.{role}', naming)
         emit(path, 'shadow', reference)
         final = resolve(tokens, path, 'shadow')
         usages.append({'token': path, 'resolved': final, 'validation': 'valid', **project(final, root)})

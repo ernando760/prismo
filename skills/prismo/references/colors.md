@@ -1,5 +1,18 @@
 # foundations — Colors
 
+Siga primeiro [foundations.md](foundations.md) para escopo, checklist, origens e
+execução automática. Este guia define as decisões e validações específicas.
+
+## Padrões seguros
+
+Reutilize marca, temas e papéis existentes; seed/identidade, temas e pares de uso
+sem evidência são essenciais e exigem pergunta. Não existe marca ou tema padrão.
+Para uma nova escala solicitada cuja seed já esteja definida, sem escala anterior
+ou instrução específica, use os três passos do exemplo abaixo (100/500/900) como
+`default`, preservando a seed original quando ela já for token. Não altere a marca
+para passar contraste. Se a escala não servir aos pares reais, registre a falha e
+esclareça o mapeamento. Prefira um plano somente de reuso quando já houver cores.
+
 ## Investigar e esclarecer
 
 1. Leia `design-system/decisions.json` antes de propor cores. Se o projeto tiver
@@ -9,13 +22,13 @@
    estilos, marca e decisões já fornecidas. Inspecione apenas os arquivos relevantes,
    excluindo dependências e a própria skill. Reutilize cores, nomes e papéis existentes;
    não crie outra fonte de verdade. Identifique o formato dos tokens encontrados.
-3. Pergunte só pelas lacunas, agrupadas: cores oficiais e fonte da marca; preferências
+3. Pergunte só pelas lacunas essenciais, agrupadas: cores oficiais e fonte da marca; preferências
    visuais/restrições; suporte a claro, escuro ou ambos. A existência de um tema não
    autoriza inventar outro. Confirme também papéis semânticos e pares de uso ainda
    indefinidos. Respostas anteriores e tokens existentes prevalecem.
-4. Proponha seeds, luminosidades da escala e mapeamentos de papéis. A ferramenta
-   não escolhe identidade, número de passos, tema ou cor de texto automaticamente.
-   Sem autorização para explorar uma identidade, espere as respostas. Não implemente
+4. Use as seeds e papéis fornecidos/existentes e os padrões seguros aplicáveis.
+   O helper calcula escolhas explícitas; não escolhe identidade, tema ou cor de texto.
+   Sem evidência para essas escolhas, espere as respostas. Não implemente
    tipografia, espaçamento, componentes nem outras fundações.
 
 ## Calcular em preview
@@ -33,8 +46,8 @@ O plano contém somente escolhas explícitas ou propostas identificadas como tai
 }
 ```
 
-Exemplo ilustrativo, não recomendação de marca. Guarde o plano fora do projeto
-consumidor enquanto não houver aprovação. Seeds aceitam `#RRGGBB` ou `[L,C,H]`
+Exemplo ilustrativo, não recomendação de marca. Guarde a entrada temporária fora
+do consumidor; o checklist preservará o plano utilizado. Seeds aceitam `#RRGGBB` ou `[L,C,H]`
 OKLCH (`L: 0–1`, `C: 0–1`, `H: 0–360`). Seeds hex preservam matiz e chroma ao
 variar L; o valor original não é automaticamente incluído ou substituído. Caso
 necessário, reutilize o token original como referência semântica para a marca.
@@ -101,7 +114,7 @@ análise contextual. Gradientes, imagens e alpha não são resolvidos por este h
 Passar uma razão não comprova conformidade completa WCAG; cor não deve ser o único
 meio de comunicar informação. Não existe um limiar AAA adicional de 1.4.11.
 
-## Apresentar, aprovar e registrar
+## Validar, persistir e registrar
 
 Apresente antes de persistir: paleta por passo com amostras/hex e OKLCH, ajustes de
 gama, fontes reutilizadas, mapeamento semântico por tema e tabela de todos os pares
@@ -109,12 +122,11 @@ com razão, uso e resultados AA/AAA. Mostre falhas sem alterar cores de marca pa
 ocultá-las. Proponha mudanças de papel/combinação e recalcule quando necessário.
 Não rotule a paleta inteira como acessível por alguns pares aprovados.
 
-Mostre também os caminhos e o diff proposto dos tokens e do registro de decisões.
-Aguarde aprovação explícita desse resultado antes de criar/alterar arquivos no
-consumidor. Se a proposta mudar, reapresente. Para atualizar arquivos existentes,
-a aprovação precisa abranger as alterações mostradas; preserve o restante.
+Use o checklist de `foundations.md` para persistir adições e registrar suas origens
+sem aprovação repetida. Conflitos com tokens/decisões existentes exigem
+esclarecimento antes de alterar; preserve o restante.
 
-Após aprovação, persista somente os tokens aprovados e adicione ao registro, sem
+Após validar, persista somente os tokens solicitados e adicione ao registro, sem
 substituir decisões de `init`, uma seção `foundations.colors` com: seeds e fontes,
 plano aprovado, temas, reutilizações, caminhos finais, algoritmo/quantização,
 pares/resultados, limitações e pendências. Use a estrutura existente; no registro

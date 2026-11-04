@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 
+from naming import from_record as naming_from_record, diagnose as naming_diagnose, alias_candidates
 from token_source import token_source as find_token_source
 from token_errors import UnsupportedTokenFormat
 from tokens import read, relative, validate, SKIP, TEXT
@@ -150,6 +151,12 @@ def audit(project, config=None, sources=None, decisions='design-system/decisions
             add('DECISIONS_JSON', 'medium', 'confirmed' if isinstance(error, ValueError) else 'manual', 'Registro não pôde ser lido', {'file': decisions, 'error': str(error)}, 'Corrigir o registro em tarefa separada; nenhuma correção executada.')
     else:
         add('DECISIONS_UNKNOWN', 'low', 'manual', 'Registro não localizado no caminho consultado', {'file': decisions}, 'Localizar decisões aprovadas; ausência aqui não prova ausência no projeto.')
+    naming = None
+    if record:
+        try:
+            naming = naming_from_record(record)
+        except ValueError as error:
+            add('NAMING_CONFIG', 'medium', 'confirmed', 'Política de nomenclatura inválida', {'file': decisions, 'error': str(error)}, 'Esclarecer a configuração; nenhuma alteração realizada.')
     if sources is None:
         settings = record.get('decisions', record) if record else {}
         paths = settings.get('paths', {}) if isinstance(settings, dict) else {}
@@ -168,6 +175,11 @@ def audit(project, config=None, sources=None, decisions='design-system/decisions
         try:
             token_index, owners, _, resolved, duplicates = validate(trees)
             token_count, token_status = len(token_index), 'passed_supported_subset'
+            if naming:
+                for item in naming_diagnose(token_index, naming)['findings']:
+                    add('TOKEN_NAMING', 'low', item['certainty'], 'Nome de token para revisão', {'file': owners[item['path']], **item}, 'Verificar a convenção e a intenção; não renomear automaticamente.')
+            for candidate in alias_candidates(token_index):
+                add('ALIAS_REVIEW', 'low', 'risk', 'Aliases com mesmo alvo para revisão', candidate, 'Confirmar intenção e temas antes de considerar redundância.')
             if duplicates:
                 add('TOKEN_EQUIVALENT', 'low', 'risk', 'Valores equivalentes para revisão de finalidade',
                     {'count': len(duplicates), 'examples': [{'tokens': pair, 'files': [owners[p] for p in pair]} for pair in duplicates[:5]]},

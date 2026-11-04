@@ -1,5 +1,7 @@
 # tokens — gerenciamento DTCG
 
+Consulte [naming.md](naming.md) quando houver convenção de tokens a registrar ou aplicar; preserve decisões e nomes existentes.
+
 ## Investigar e propor
 
 Leia instruções locais e decisões aprovadas (normalmente
@@ -122,3 +124,5 @@ e docs afetados conforme o escopo aprovado. Não declare validado sem executar;
 relate comando, resultado, cobertura e bloqueios. Se houver regressão, corrija dentro
 do escopo autorizado ou reverta e apresente a pendência. Registre decisões apenas
 no formato e diff aprovados, preservando as demais seções/fundações.
+
+Quando houver política de nomenclatura registrada, a saída inclui diagnóstico separado da validação DTCG; recomendações não autorizam migração.

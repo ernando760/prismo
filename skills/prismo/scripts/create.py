@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Revisa proposta create em leitura. Não gera componentes, executa checks ou aprova mudanças."""
 import argparse
+from naming import from_record as naming_from_record, diagnose as naming_diagnose
 import copy
 import json
 import strict_json
@@ -76,6 +77,7 @@ def review(project, plan, decisions='design-system/decisions.json', package_dir=
     record = read_json(record_path) if record_path.is_file() else {}
     if not record:
         issues.append('Registro de decisões ausente; localizar antes de implementar.')
+    naming = naming_from_record(record)
     settings = record.get('decisions', record)
     packages = settings.get('paths', {}).get('packages', {}).get(plan['platform'], [])
     if package_dir is None and len(packages) == 1:
@@ -267,7 +269,10 @@ def review(project, plan, decisions='design-system/decisions.json', package_dir=
     if not found:
         approvals.append('catalog_setup')
         warnings.append('Configuração de catálogo ausente; apresentar dependências/arquivos e obter aprovação antes de instalar/configurar.')
-    return {'status': 'proposal_ready' if not issues else 'needs_input', 'phase': 'proposal',
+    naming_results = naming_diagnose([p['path'] for p in plan['new_tokens']], naming)
+    if naming and naming_results['findings']:
+        issues.append('Esclarecer a classificação e a nomenclatura dos novos tokens antes de implementar.')
+    return {'naming': naming_results, 'status': 'proposal_ready' if not issues else 'needs_input', 'phase': 'proposal',
             'platform': platform, 'package_dir': package_dir, 'architecture_evidence': {'web': web, 'flutter': flutter},
             'atomic': plan['atomic'], 'token_source': token_source, 'checked_token_paths': sorted(seen),
             'distribution': {'contract': distribution, 'required_checks': sorted(required_checks), 'validation': 'not_run'},

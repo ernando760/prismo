@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Typography: escala modular e preview DTCG; nenhuma escrita no consumidor."""
 import argparse
+from naming import path as naming_path
 import copy
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP, localcontext
 import json
@@ -134,7 +135,7 @@ def modular(base, ratio, exponent, precision):
     return result
 
 
-def build(plan, existing=None):
+def build(plan, existing=None, naming=None):
     required = {'base', 'ratio', 'precision', 'root_px', 'steps', 'families', 'weights', 'styles'}
     if not isinstance(plan, dict) or set(plan) != required:
         raise ValueError('Plano exige: ' + ', '.join(sorted(required)))
@@ -184,20 +185,20 @@ def build(plan, existing=None):
         tokens = index(tree)
         return '{' + path + '}'
 
-    families = {label(key): emit(f'primitive.typography.family.{key}', 'fontFamily', value)
+    families = {label(key): emit(naming_path('primitive', f'typography.family.{key}', naming), 'fontFamily', value)
                 for key, value in plan['families'].items()}
-    weights = {label(key): emit(f'primitive.typography.weight.{key}', 'fontWeight', value)
+    weights = {label(key): emit(naming_path('primitive', f'typography.weight.{key}', naming), 'fontWeight', value)
                for key, value in plan['weights'].items()}
     sizes, scale = {}, []
     for key, exponent in plan['steps'].items():
         label(key)
         size = modular(base['value'], plan['ratio'], exponent, precision)
-        sizes[key] = emit(f'primitive.typography.size.{key}', 'dimension', {'value': size, 'unit': base['unit']})
+        sizes[key] = emit(naming_path('primitive', f'typography.size.{key}', naming), 'dimension', {'value': size, 'unit': base['unit']})
         scale.append({'step': key, 'exponent': exponent, 'fontSize': {'value': size, 'unit': base['unit']}})
     styles = []
     for key, config in plan['styles'].items():
         label(key)
-        path = f'semantic.typography.{key}'
+        path = naming_path('semantic', f'typography.{key}', naming)
         if alias(config):
             style_alias = emit(path, 'typography', config)
         else:
@@ -211,8 +212,8 @@ def build(plan, existing=None):
             if multiplier <= 0:
                 raise ValueError('Line-height arredondou para zero.')
             tracking = rounded(numeric(size['value']) * numeric(config['letter_spacing_em']), precision)
-            height_alias = emit(f'primitive.typography.lineHeight.{key}', 'number', multiplier)
-            spacing_alias = emit(f'primitive.typography.letterSpacing.{key}', 'dimension', {'value': tracking, 'unit': size['unit']})
+            height_alias = emit(naming_path('primitive', f'typography.lineHeight.{key}', naming), 'number', multiplier)
+            spacing_alias = emit(naming_path('primitive', f'typography.letterSpacing.{key}', naming), 'dimension', {'value': tracking, 'unit': size['unit']})
             style_alias = emit(path, 'typography', {'fontFamily': families[config['family']],
                                'fontWeight': weights[config['weight']], 'fontSize': sizes[config['step']],
                                'lineHeight': height_alias, 'letterSpacing': spacing_alias})

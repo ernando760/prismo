@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Inventário limitado em leitura para document; não configura portal nem aprova alterações."""
 import argparse
+from naming import from_record as naming_from_record
 import json
 import strict_json
 import os
@@ -36,6 +37,7 @@ def inventory(project, decisions='design-system/decisions.json', limit=LIMIT):
         raise ValueError('Projeto deve ser um diretório.')
     record_path = relative(root, decisions)
     record = read_object(record_path) if record_path.is_file() else None
+    naming = naming_from_record(record) if record is not None else None
     settings = record.get('decisions', record) if record is not None else {}
     if not isinstance(settings, dict) or not isinstance(settings.get('paths', {}), dict):
         raise ValueError('Registro de decisões/paths deve ser objeto.')
@@ -103,7 +105,7 @@ def inventory(project, decisions='design-system/decisions.json', limit=LIMIT):
     if truncated or skipped_links:
         notes.append('Inventário parcial; limites/symlinks não comprovam ausência de fontes.')
     return {
-        'phase': 'investigation', 'decisions': decisions if record is not None else None,
+        'naming': naming, 'phase': 'investigation', 'decisions': decisions if record is not None else None,
         'declared_documentation': declared_docs,
         'declared_token_source': source,
         'declared_token_source_exists': bool(token_path and token_path.is_file()),

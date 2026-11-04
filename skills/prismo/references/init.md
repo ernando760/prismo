@@ -1,5 +1,7 @@
 # init — inicialização guiada
 
+Consulte [naming.md](naming.md) quando houver convenção de tokens a registrar ou aplicar; preserve decisões e nomes existentes.
+
 ## 1. Investigar antes de perguntar
 
 Leia as instruções locais e o contexto já fornecido. Liste arquivos primeiro
@@ -104,6 +106,8 @@ python3 /caminho/da/skill/scripts/init.py /projeto --plan /tmp/plano.json
 # Somente após aprovação explícita do preview pelo usuário:
 python3 /caminho/da/skill/scripts/init.py /projeto --plan /tmp/plano.json --apply
 ```
+
+O plano pode incluir `naming` opcional conforme [naming.md](naming.md); sua ausência não exige configuração adicional.
 
 O preview não escreve no projeto. O script não obtém aprovação: `--apply` é usado
 pelo agente somente após a aprovação do usuário. Ele recusa arquivos existentes,

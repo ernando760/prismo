@@ -1,5 +1,17 @@
 # foundations — Elevation
 
+Siga primeiro [foundations.md](foundations.md) para escopo, checklist, origens e
+execução automática. Este guia define as decisões e validações específicas.
+
+## Padrões seguros
+
+Reutilize níveis/receitas existentes. Sem receitas anteriores e com tema claro
+definido, use o exemplo abaixo (none/low, flat/card, px, rounding half_up 0.25,
+precisão 4, uma camada preta com alpha 0.12, offset 0/1, blur 2, spread 0, scale 1).
+Registre `default` e revisão visual/performance pendente. Não crie medium/high,
+inset ou overlays automaticamente. Em temas escuros ou requisitos de intensidade
+sem estratégia existente, pergunte: a receita clara não é padrão para esses casos.
+
 ## Investigar e esclarecer
 
 Leia `design-system/decisions.json` (ou caminho documentado) e os tokens indicados.
@@ -12,7 +24,7 @@ Registre fontes e reutilize nomes e padrões aprovados, preservando as fundaçõ
 Pergunte apenas pelas lacunas: finalidades e hierarquia dos níveis; cor/alpha e
 preferências de intensidade por tema; deslocamentos, blur, spread e camadas;
 restrições de plataforma/performance; unidade, arredondamento e conversão rem.
-Não repita respostas nem invente valores para preencher `low/medium/high`. Esses
+Não repita respostas nem invente valores para preencher `medium/high`. Esses
 nomes são opcionais; proponha só níveis com usos reais, preferindo poucas camadas
 necessárias. Sem critério existente de intensidade/custo, justifique a proposta e
 registre a necessidade de revisão visual/performance, sem impor limiares arbitrários.
@@ -54,7 +66,7 @@ python3 /caminho/da/skill/scripts/elevation.py --plan /tmp/elevation-plan.json
 python3 /caminho/da/skill/scripts/elevation.py --plan /tmp/elevation-plan.json --existing /projeto/tokens.json
 ```
 
-Guarde o plano fora do consumidor antes de aprovação. O helper apenas imprime
+Guarde a entrada temporária fora do consumidor. O helper apenas imprime
 JSON; não tem modo de escrita. Exit 0 significa parâmetros/aliases validados,
 não aprovação visual ou portabilidade total; erros retornam 1 sem preview parcial.
 Reutiliza utilitários dos scripts vizinhos spacing/borders/colors, sem executar
@@ -120,16 +132,17 @@ finalidade, sem presumir um orçamento. Sombra não altera layout nem substitui
 contraste, borda, foco ou tamanho de alvo. Em temas escuros, confirme a estratégia
 visual existente; não invente overlays ou cores para substituir sombras.
 
-## Aprovação e persistência
+## Validação e persistência
 
 Apresente tabela de níveis/camadas, valores finais, alpha efetivo, usos, aliases,
 limitações e resultados da validação. Destaque inset sem suporte Flutter, alpha
 zero e diferenças de blur; cálculos válidos não provam ausência de excessos ou
 conformidade visual/acessível. Mostre caminhos e diff de tokens/decisões, sem
-mudanças em Colors, Typography, Spacing ou Borders. Aguarde aprovação explícita;
-reapresente se a proposta mudar.
+mudanças em Colors, Typography, Spacing ou Borders. Use o checklist de
+`foundations.md` para persistir adições e registrar suas origens sem aprovação
+repetida. Conflitos exigem esclarecimento antes de alterar.
 
-Após aprovação, persista somente o aprovado e acrescente `foundations.elevation`
+Após validar, persista somente o solicitado e acrescente `foundations.elevation`
 ao registro existente. Registre plano, fontes, justificativas, usos, caminhos,
 arredondamento, composição de alpha, reuso, mapeamento de plataforma, verificações
 e pendências. Releia arquivos, resolva aliases, recalcule e confira o diff das

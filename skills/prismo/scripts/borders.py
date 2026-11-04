@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Borders: escalas dimensionais e intenção full; preview DTCG sem escrita."""
 import argparse
+from naming import path as naming_path
 import copy
 from decimal import Decimal, localcontext
 import json
@@ -54,7 +55,7 @@ def insert(tree, path, kind, value):
     node[parts[-1]] = {'$type': kind, '$value': copy.deepcopy(value)}
 
 
-def build(plan, existing=None):
+def build(plan, existing=None, naming=None):
     required = {'radius', 'width', 'full', 'bounds_px', 'root_px', 'semantics'}
     if not isinstance(plan, dict) or set(plan) != required:
         raise ValueError('Plano exige radius, width, full, bounds_px, root_px e semantics.')
@@ -92,7 +93,7 @@ def build(plan, existing=None):
         if not alias(value):
             for candidate in tokens:
                 # Não vincule raios/espessuras a outras fundações por coincidência.
-                if candidate.startswith('primitive.borders.') or candidate in sources:
+                if candidate.startswith(naming_path('primitive', 'borders', naming) + '.') or candidate in sources:
                     try:
                         equal = resolve(tokens, candidate, category) == (kind, expected)
                     except ValueError:
@@ -146,12 +147,12 @@ def build(plan, existing=None):
             else:
                 raw, size = calculate(base['value'], multiplier, config['rounding'])
                 value = {'value': size, 'unit': base['unit']}
-            path = f'primitive.borders.{category}.{step}'
+            path = naming_path('primitive', f'borders.{category}.{step}', naming)
             emit(path, category, 'dimension', value, sources)
             kind, final = resolve(tokens, path, category)
             scales[category].append({'token': path, 'raw_value': raw, 'value': final, **project(category, kind, final)})
     if plan['full']:
-        path = 'primitive.borders.radius.full'
+        path = naming_path('primitive', 'borders.radius.full', naming)
         emit(path, 'radius', 'number', 0.5)
         scales['radius'].append({'token': path, 'raw_value': None, 'value': 0.5, **project('radius', 'number', 0.5)})
     for category, roles in semantics.items():
@@ -162,7 +163,7 @@ def build(plan, existing=None):
             if not alias(reference):
                 raise ValueError('Semânticos exigem aliases {caminho}.')
             kind, value = resolve(tokens, reference[1:-1], category)
-            path = f'semantic.borders.{category}.{role}'
+            path = naming_path('semantic', f'borders.{category}.{role}', naming)
             emit(path, category, kind, reference)
             usages.append({'token': path, 'value': value, **project(category, kind, value)})
     if not usages:
