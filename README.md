@@ -1,6 +1,6 @@
 # Prismo
 
-Versão experimental: `v0.1.0-alpha.2`.
+Candidata experimental: `v0.1.0-alpha.3` — ainda sem tag ou publicação.
 
 Agent Skill experimental para criar e evoluir Design Systems Web, Flutter e
 Marketing no Codex. Uma única Skill, com referências sob demanda e helpers Python
@@ -210,13 +210,22 @@ A verificação complementar de 2026-11-04 aprovou a instalação limpa padrão,
 com lifecycle do esbuild, e a suíte em sandbox Linux com Node 24.22.1/npm 11.19.1.
 Os bloqueios locais anteriores (DNS e spawnSync EPERM) foram diagnosticados como
 restrições do ambiente. Resultados e logs estão preservados no checklist abaixo.
-Os resultados em `tests/*-results.md` e `docs/*-checklist.md` são registros históricos,
-com limites da execução original. O [checklist da primeira release](docs/experimental-release-checklist.md) é
-histórico; a [validação da alpha.2](docs/evidencias-alpha2/RESULTADOS.md) registra
-os cenários e verificações desta candidata.
+Os resultados em `tests/*-results.md` são históricos, com limites da execução
+original. O [checklist da primeira release](docs/experimental-release-checklist.md)
+e a [validação da alpha.2](docs/evidencias-alpha2/RESULTADOS.md) preservam evidências
+das versões anteriores. A [validação da alpha.3](docs/evidencias-alpha3/RESULTADOS.md)
+registra os cenários, resultados e limites da candidata atual.
+
+`docs/` mantém contratos/documentação permanente e registros de release. Planos de
+implementação, investigações e relatórios de trabalho ficam em `plans/`, pasta
+exclusivamente local e ignorada pelo Git; não são dependências da documentação publicada.
 
 ## Limites de uso experimental
 
+- Colors usa cobertura incremental e validação prévia para propostas novas; o modo
+  legado continua aceito. Consulte [Colors](skills/prismo/references/colors-coverage.md).
+  Inspeção visual declarada não é comprovada pelo helper; duas sessões novas
+  exercitaram o fluxo corrigido. Leitura excessiva de decisões ainda foi observada.
 - Uso acompanhado: decisões/diffs precisam de aprovação fora da automação aditiva
   de `foundations`; nela, escolhas essenciais ausentes e conflitos exigem diálogo.
   Sessões novas exercitaram invocação explícita, init, as cinco fundações,
@@ -244,6 +253,6 @@ os cenários e verificações desta candidata.
 - Marketing participa do escopo de decisões, fundações e documentação; não possui
   gerador de componentes próprio. `create` implementa Web ou Flutter.
 
-Consulte as [notas da candidata alpha.2](docs/experimental-release-notes-0.1.0-alpha.2.md)
+Consulte as [notas da candidata alpha.3](docs/experimental-release-notes-0.1.0-alpha.3.md)
 para capacidades, cenários exercitados e limitações.
 Consulte o [CHANGELOG](CHANGELOG.md) para o histórico das versões.

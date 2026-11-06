@@ -11,6 +11,9 @@ import re
 import sys
 
 
+USAGES = ('normal_text', 'large_text', 'non_text')
+
+
 def number(value, low, high):
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not low <= value <= high:
         raise ValueError(f'Número finito esperado entre {low} e {high}: {value!r}')
@@ -94,7 +97,7 @@ def contrast(foreground, background):
 
 def evaluate(ratio, kind):
     number(ratio, 1, 21)
-    if kind not in ('normal_text', 'large_text', 'non_text'):
+    if kind not in USAGES:
         raise ValueError('Uso esperado: normal_text, large_text ou non_text.')
     aa = 4.5 if kind == 'normal_text' else 3
     aaa = {'normal_text': 7, 'large_text': 4.5, 'non_text': None}[kind]
@@ -156,11 +159,194 @@ def put(tree, path, token):
     node[parts[-1]] = token
 
 
-def build(plan, existing=None, naming=None):
-    if not isinstance(plan, dict) or set(plan) != {'palettes', 'themes', 'pairs'}:
-        raise ValueError('Plano exige palettes, themes e pairs.')
+def text(value):
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError('Coverage exige texto não vazio.')
+    return value
+
+
+def coverage_report(coverage, plan, tokens, results, generated):
+    """Contrato opt-in; evidência declarada não é inspeção executada pelo helper."""
+    if (not isinstance(coverage, dict) or set(coverage) != {'version', 'uses', 'steps'}
+            or type(coverage['version']) is not int or coverage['version'] != 1
+            or not isinstance(coverage['uses'], list) or not isinstance(coverage['steps'], list)):
+        raise ValueError('Coverage exige version 1, uses e steps.')
+    rows, ids = [], set()
+    for use in coverage['uses']:
+        required = {'id', 'use', 'theme', 'horizon', 'status', 'evidence', 'pending',
+                    'tokens', 'pairs', 'visual', 'decision', 'alternatives', 'review_when'}
+        if not isinstance(use, dict) or set(use) != required:
+            raise ValueError('Uso de coverage tem campos ausentes/desconhecidos.')
+        for key in ('id', 'use', 'evidence', 'review_when'):
+            text(use[key])
+        if use['id'] in ids:
+            raise ValueError('ID de coverage duplicado: ' + use['id'])
+        ids.add(use['id'])
+        if use['theme'] not in plan['themes']:
+            raise ValueError('Tema de coverage fora do escopo.')
+        if use['horizon'] not in ('functional', 'evolution') or use['status'] not in (
+                'covered', 'partial', 'deferred', 'not_evaluated'):
+            raise ValueError('Horizonte/status de coverage inválido.')
+        if use['decision'] not in ('reuse', 'extension', 'exception', 'undecided'):
+            raise ValueError('Decisão de coverage inválida.')
+        text(use['alternatives'])
+        for key in ('pending', 'tokens', 'pairs'):
+            if not isinstance(use[key], list):
+                raise ValueError('Coverage exige listas em pending, tokens e pairs.')
+        for pending in use['pending']:
+            text(pending)
+        traces = []
+        for path in use['tokens']:
+            text(path)
+            value = resolve(tokens, path)
+            chain, current = [], path
+            while True:
+                chain.append(current)
+                alias = tokens[current][0]['$value']
+                if not isinstance(alias, str):
+                    break
+                current = alias[1:-1]
+            traces.append({'token': path, 'chain': chain, 'hex': hex_color(value),
+                           'resolved_srgb': list(value)})
+        checked = []
+        for pair in use['pairs']:
+            if not isinstance(pair, dict) or set(pair) != {'foreground', 'background', 'usage'}:
+                raise ValueError('Par de coverage inválido.')
+            match = next((r for r in results if all(r[k] == pair[k] for k in pair)), None)
+            if match is None:
+                raise ValueError('Par de coverage não consta dos pares calculados.')
+            if any(pair[k] not in use['tokens'] for k in ('foreground', 'background')):
+                raise ValueError('Par deve constar dos tokens do uso.')
+            checked.append(match)
+        visual = use['visual']
+        if (not isinstance(visual, dict) or set(visual) != {'status', 'evidence'}
+                or visual['status'] not in ('passed', 'failed', 'pending', 'not_applicable')):
+            raise ValueError('Visual exige status e evidence.')
+        text(visual['evidence'])
+        calculation = ('not_evaluated' if not checked else
+                       'passed' if all(r['AA'] for r in checked) else 'failed')
+        if use['status'] == 'covered' and (not traces or use['pending']
+                or calculation == 'failed' or visual['status'] not in ('passed', 'not_applicable')
+                or use['decision'] == 'undecided'):
+            raise ValueError('Uso coberto exige evidências e ausência de pendências relevantes.')
+        if use['status'] == 'covered' and not checked:
+            raise ValueError('Uso sem cálculo fica parcial; cálculo externo é limitação explícita.')
+        if use['status'] == 'not_evaluated' and (checked or visual['status'] in ('passed', 'failed')):
+            raise ValueError('Uso já avaliado não pode ser not_evaluated.')
+        rows.append({**copy.deepcopy(use), 'calculation': calculation, 'contrast': checked,
+                     'traces': traces, 'conformance': 'not_assessed',
+                     'visual_source': 'declared_evidence_not_verified_by_helper'})
+    planned = set()
+    for step in coverage['steps']:
+        if (not isinstance(step, dict) or set(step) != {'token', 'uses', 'reason', 'naming_evidence'}
+                or not isinstance(step['uses'], list) or not step['uses']):
+            raise ValueError('Passo exige token, uses, reason e naming_evidence.')
+        text(step['reason']); text(step['naming_evidence']); text(step['token'])
+        if step['token'] in planned or step['token'] not in generated:
+            raise ValueError('Passo duplicado ou fora da escala proposta.')
+        planned.add(step['token'])
+        for uid in step['uses']:
+            row = next((r for r in rows if r['id'] == uid), None)
+            if row is None or step['token'] not in row['tokens'] or row['decision'] != 'extension':
+                raise ValueError('Passo exige uso concreto/evolução com decisão extension e token rastreado.')
+            if row['status'] in ('deferred', 'not_evaluated'):
+                raise ValueError('Uso adiado/não avaliado não autoriza gerar passo.')
+    if planned != set(generated):
+        raise ValueError('Justifique cada passo proposto em coverage.steps.')
+    return {'status': 'recorded', 'uses': rows, 'steps': copy.deepcopy(coverage['steps']),
+            'summary': {status: sum(r['status'] == status for r in rows)
+                        for status in ('covered', 'partial', 'deferred', 'not_evaluated')},
+            'conformance': 'not_assessed'}
+
+
+def palette_review(swatches, tokens=None):
+    """Valores finais e relações, sem limiar universal de harmonia/distinção."""
+    values, adjacent = [], []
+    for swatch in swatches:
+        final = to_oklch(swatch['hex'])
+        values.append({'token': swatch['token'], 'final_oklch': list(final)})
+        if len(values) > 1:
+            prev = values[-2]
+            if prev['token'].rsplit('.', 1)[0] == swatch['token'].rsplit('.', 1)[0]:
+                a = prev['final_oklch']; b = final
+                hue_delta = (b[2] - a[2] + 180) % 360 - 180 if min(a[1], b[1]) > 1e-7 else None
+                distance = math.sqrt(max(0, (b[0]-a[0])**2 + a[1]**2 + b[1]**2 -
+                                     2*a[1]*b[1]*math.cos(math.radians(b[2]-a[2]))))
+                adjacent.append({'from': prev['token'], 'to': swatch['token'],
+                                 'delta_L': b[0]-a[0], 'delta_C': b[1]-a[1],
+                                 'delta_H': hue_delta, 'distance_oklab': distance,
+                                 'identical_after_quantization': swatches[len(values)-2]['hex'] == swatch['hex']})
+    families = {}
+    if tokens is not None:
+        prefixes = {swatch['token'].rsplit('.', 1)[0] for swatch in swatches}
+        for prefix in sorted(prefixes):
+            members = []
+            for path, (_, kind) in tokens.items():
+                if kind != 'color' or path.rsplit('.', 1)[0] != prefix:
+                    continue
+                try:
+                    value = resolve(tokens, path)
+                    members.append({'token': path, 'hex': hex_color(value),
+                                    'final_oklch': list(to_oklch(value))})
+                except ValueError:
+                    members.append({'token': path, 'status': 'unsupported_manual_review'})
+            families[prefix] = members
+    return {'families_including_existing': families, 'values': values, 'adjacent_in_plan_order': adjacent,
+            'visual_validation': 'not_performed',
+            'limitations': 'Vizinhos na ordem explícita do plano; famílias incluem tokens existentes para revisão contextual. Números dos nomes não são luminosidade. Medidas não garantem harmonia ou distinção.'}
+
+
+def summary(result, existing):
+    from spacing import preview_summary
+    brief = preview_summary(result, existing)
+    if 'coverage' in brief:
+        brief['coverage'] = coverage_summary(brief['coverage'])
+    review = brief.pop('perceptual_review')
+    brief['perceptual_review'] = {'visual_validation': review['visual_validation'],
+        'limitations': review['limitations'],
+        'identical_pairs': [p for p in review['adjacent_in_plan_order'] if p['identical_after_quantization']]}
+    return brief
+
+
+def recorded_coverage(record, trees, naming=None):
+    """Recalcula somente pares existentes; nunca gera escalas nem tokens."""
+    foundations = record.get('foundations', {})
+    if not isinstance(foundations, dict) or not isinstance(foundations.get('colors', {}), dict):
+        raise ValueError('Registro de Colors inválido; investigar sem sobrescrever.')
+    foundation = foundations.get('colors', {})
+    plan = foundation.get('plan', {})
+    if not isinstance(plan, dict):
+        raise ValueError('Plano registrado de Colors inválido.')
+    if 'coverage' not in plan:
+        return {'status': 'unknown_legacy', 'conformance': 'not_assessed'}
+    tokens = {}
+    for tree in trees.values():
+        for path, token in flatten(tree).items():
+            if path in tokens:
+                raise ValueError('Contextos de cor sobrepostos: ' + path)
+            tokens[path] = token
+    results = [{**pair, **evaluate(contrast(resolve(tokens, pair['foreground']),
+                                          resolve(tokens, pair['background'])), pair['usage'])}
+               for pair in plan['pairs']]
+    generated = [naming_path('primitive', palette + '.' + step, naming)
+                 for palette, config in plan['palettes'].items() for step in config['steps']]
+    return coverage_report(plan['coverage'], plan, tokens, results, generated)
+
+
+def coverage_summary(coverage):
+    return {**{k: v for k, v in coverage.items() if k not in ('uses', 'steps')},
+            'uses': [{k: row[k] for k in ('id', 'use', 'theme', 'horizon', 'status',
+                      'decision', 'calculation', 'visual', 'pending', 'conformance')}
+                     for row in coverage.get('uses', [])]}
+
+
+def build(plan, existing=None, naming=None, *, require_coverage=False):
+    if not isinstance(plan, dict) or set(plan) - {'palettes', 'themes', 'pairs', 'coverage'} or not {'palettes', 'themes', 'pairs'} <= set(plan):
+        raise ValueError('Plano exige palettes, themes e pairs; coverage é opcional no modo legado.')
+    if require_coverage and 'coverage' not in plan:
+        raise ValueError('--require-coverage exige plan.coverage para os usos afetados; consulte colors-coverage.md.')
     if not isinstance(plan['palettes'], dict) or not isinstance(plan['themes'], dict) or not plan['themes']:
-        raise ValueError('Palettes e themes devem ser objetos; escolha temas explicitamente.')
+        raise ValueError('palettes e themes devem ser objetos; themes exige ao menos light ou dark (papéis podem ser {}).')
     if any(t not in ('light', 'dark') for t in plan['themes']):
         raise ValueError('Temas suportados: light e dark.')
     tree = copy.deepcopy(existing if existing is not None else {})
@@ -215,38 +401,76 @@ def build(plan, existing=None, naming=None):
             path = naming_path('semantic', f'{theme}.{role}', naming)
             put(tree, path, {'$type': 'color', '$value': '{' + target + '}'})
             tokens = flatten(tree)
-    if not isinstance(plan['pairs'], list) or not plan['pairs']:
-        raise ValueError('Informe os pares de contraste e seus usos.')
+    if not isinstance(plan['pairs'], list) or (not plan['pairs'] and 'coverage' not in plan):
+        raise ValueError('pairs exige lista não vazia no modo legado; pairs: [] só é permitido com coverage válido, sem declarar cálculo aprovado.')
     results = []
-    for pair in plan['pairs']:
+    for index, pair in enumerate(plan['pairs']):
         if not isinstance(pair, dict) or set(pair) != {'foreground', 'background', 'usage'}:
-            raise ValueError('Par exige foreground, background e usage.')
+            raise ValueError(f'pairs[{index}] exige foreground, background e usage.')
+        if pair['usage'] not in USAGES:
+            raise ValueError(f'pairs[{index}].usage: use ' + ', '.join(USAGES) + '.')
         fg, bg = (resolve(tokens, pair[k]) for k in ('foreground', 'background'))
         results.append({**pair, **evaluate(contrast(fg, bg), pair['usage'])})
-    return {'status': 'preview', 'tokens': tree, 'swatches': swatches, 'reused': reused, 'contrast': results}
+    coverage = (coverage_report(plan['coverage'], plan, tokens, results,
+                [s['token'] for s in swatches]) if 'coverage' in plan else
+                {'status': 'unknown_legacy', 'conformance': 'not_assessed'})
+    if require_coverage and not coverage['uses']:
+        raise ValueError('--require-coverage exige ao menos um uso afetado em coverage.uses.')
+    return {'status': 'preview', 'tokens': tree, 'swatches': swatches, 'reused': reused,
+            'contrast': results, 'coverage': coverage, 'perceptual_review': palette_review(swatches, tokens)}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
-    palette = sub.add_parser('palette')
-    palette.add_argument('--plan', type=Path, required=True)
-    palette.add_argument('--existing', type=Path)
+    palette = sub.add_parser('palette', formatter_class=argparse.RawDescriptionHelpFormatter,
+        description='Preview somente leitura; valida o contrato JSON, sem aprovar nem persistir.',
+        epilog="""Contrato JSON:
+  palettes: objeto {familia: {seed: "#RRGGBB" ou [L,C,H], steps: {nome: L}}};
+    use {} para reuso. Sem quantidade fixa nem geração implícita de passos.
+  themes: objeto não vazio com light e/ou dark; {"light": {}} reutiliza papéis.
+  pairs: [{"foreground": "caminho", "background": "caminho", "usage": "normal_text"}].
+    usage aceita somente normal_text, large_text, non_text (não ui_component).
+    pairs: [] exige coverage válido e não significa contraste aprovado.
+  coverage: {"version": 1, "uses": [...], "steps": [...]}.
+    uses: id, use, theme, horizon (functional|evolution), status
+    (covered|partial|deferred|not_evaluated), evidence, pending, tokens, pairs,
+    visual {status: passed|failed|pending|not_applicable, evidence}, decision
+    (reuse|extension|exception|undecided), alternatives, review_when.
+    steps: token, uses [IDs], reason, naming_evidence; justifique os passos propostos.
+    Matriz incremental: somente usos afetados; não copie o histórico inteiro.
+
+Exemplos:
+  python3 colors.py palette --plan /tmp/plan.json --existing tokens.json --require-coverage
+  python3 colors.py palette --plan - --existing tokens.json --require-coverage < /tmp/plan.json
+  python3 colors.py palette --plan legacy.json --existing tokens.json
+
+Novas propostas: leia references/colors-coverage.md, adapte
+assets/templates/colors-coverage-plan.json e valide antes de apresentar a matriz.
+Arquivo/--plan - (stdin) são equivalentes. Confira retorno e stderr antes de ler
+stdout como JSON. Exit 0 = cálculo/contrato concluídos, não aprovação visual,
+contraste garantido ou autorização. Exit 1 = entrada inválida (stderr; stdout vazio).
+Resumo por padrão; --full somente para detalhes. Planos legados não exigem coverage.
+""")
+    palette.add_argument('--plan', type=Path, required=True, help='Plano JSON; - lê stdin, sem arquivo temporário.')
+    palette.add_argument('--existing', type=Path, help='Fonte DTCG existente, somente leitura.')
+    palette.add_argument('--require-coverage', action='store_true',
+                         help='Exigir cobertura válida e não vazia dos usos afetados em novas propostas.')
     palette.add_argument('--full', action='store_true', help='Incluir documento completo de tokens.')
     check = sub.add_parser('contrast')
     check.add_argument('foreground'); check.add_argument('background')
-    check.add_argument('--usage', choices=['normal_text', 'large_text', 'non_text'], default='normal_text')
+    check.add_argument('--usage', choices=USAGES, default='normal_text')
     check.add_argument('--fail-on', choices=['AA', 'AAA'])
     args = parser.parse_args()
     try:
         if args.command == 'palette':
             existing = strict_json.loads(args.existing.read_text()) if args.existing else None
-            result = build(strict_json.loads(args.plan.read_text()), existing)
+            content = sys.stdin.read() if args.plan == Path('-') else args.plan.read_text()
+            result = build(strict_json.loads(content), existing, require_coverage=args.require_coverage)
         else:
             result = evaluate(contrast(args.foreground, args.background), args.usage)
         if args.command == 'palette' and not args.full:
-            from spacing import preview_summary
-            result = preview_summary(result, existing)
+            result = summary(result, existing)
         print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
         if args.command == 'contrast' and args.fail_on and result[args.fail_on] is not True:
             return 2

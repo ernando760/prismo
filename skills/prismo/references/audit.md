@@ -145,3 +145,12 @@ prioriza severidade e informa totais/omitidos/escopo. Restrinja a entrada para o
 detalhes dos pares omitidos, sem repetir checagens já conclusivas por padrão.
 
 Com política registrada, avalie nomes separadamente do DTCG. Aliases com o mesmo alvo são candidatos para revisão de intenção, não redundâncias comprovadas.
+
+## Cobertura de Colors
+
+Siga [colors-coverage.md](colors-coverage.md). `checks.colors_coverage` resume
+a matriz registrada e recalcula seus pares sobre as fontes fornecidas, sem chamar
+o gerador de paletas ou persistir. Evidência visual registrada não é reinspeção.
+Contrato ou fonte incompatível exige revisão contextual; ausência da matriz em
+legados não é defeito. Verifique nomes/inserções, lacunas, exceções e usos reais,
+sem impor quantidade fixa de tons, promover cores ou consolidar valores iguais.

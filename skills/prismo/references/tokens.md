@@ -126,3 +126,9 @@ do escopo autorizado ou reverta e apresente a pendência. Registre decisões ape
 no formato e diff aprovados, preservando as demais seções/fundações.
 
 Quando houver política de nomenclatura registrada, a saída inclui diagnóstico separado da validação DTCG; recomendações não autorizam migração.
+
+## Extensão e rastreabilidade de Colors
+
+Para propostas novas de cores, siga o fluxo de validação incremental e apresentação
+da matriz em [colors-coverage.md](colors-coverage.md), antes da aprovação desta
+operação. Consultas legadas e contraste pontual preservam seu escopo.

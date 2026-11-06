@@ -142,3 +142,12 @@ checklist/tokens/decisões, validações realmente executadas e pendências por 
 Em falha, informe a etapa, o motivo, o que já foi preservado e como retomar.
 Cálculo/AA de pares não comprova WCAG completa, validação visual ou equivalência
 Web/Flutter. Não instale fontes, Storybook ou outras ferramentas automaticamente.
+
+## Cobertura de Colors
+
+Novos planos de Colors seguem [colors-coverage.md](colors-coverage.md): cobertura
+funcional/evolução, passos justificados e cálculo separado de inspeção visual.
+`plan.coverage` é opcional para compatibilidade legada e integra o mesmo journal,
+lock, origens e retomada de tokens/decisões; não grave uma matriz paralela.
+`completed` confirma as verificações técnicas executadas, mesmo com inspeção
+visual pendente explicitada; não significa conformidade ou uso integralmente validado.

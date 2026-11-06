@@ -7,11 +7,13 @@ execução automática. Este guia define as decisões e validações específica
 
 Reutilize marca, temas e papéis existentes; seed/identidade, temas e pares de uso
 sem evidência são essenciais e exigem pergunta. Não existe marca ou tema padrão.
-Para uma nova escala solicitada cuja seed já esteja definida, sem escala anterior
-ou instrução específica, use os três passos do exemplo abaixo (100/500/900) como
-`default`, preservando a seed original quando ela já for token. Não altere a marca
+Para uma nova escala, escolha a granularidade pela cobertura funcional e pela
+evolução esperada fundamentada; não há quantidade fixa de passos nem default de
+três tons. Preserve a seed original quando ela já for token. Não altere a marca
 para passar contraste. Se a escala não servir aos pares reais, registre a falha e
-esclareça o mapeamento. Prefira um plano somente de reuso quando já houver cores.
+esclareça o mapeamento. Siga o contrato de [cobertura](colors-coverage.md), incluindo
+nomenclatura, avaliação perceptual, exceções e apresentação resumida. Prefira um
+plano somente de reuso quando já houver cores.
 
 ## Investigar e esclarecer
 
@@ -34,7 +36,9 @@ esclareça o mapeamento. Prefira um plano somente de reuso quando já houver cor
 ## Calcular em preview
 
 Use `scripts/colors.py` (Python 3.9+, biblioteca padrão), relativo à pasta da skill.
-O plano contém somente escolhas explícitas ou propostas identificadas como tais:
+O plano contém somente escolhas explícitas ou propostas identificadas como tais.
+O exemplo mínimo legado abaixo continua aceito; novos planejamentos devem usar
+o campo opcional `coverage` conforme [colors-coverage.md](colors-coverage.md):
 
 ```json
 {
@@ -64,8 +68,10 @@ saída zero significa cálculo concluído, não contraste aprovado: confira cada
 Em `contrast`, `--fail-on AA|AAA` retorna 2 se o critério falhar ou não se aplicar;
 entradas inválidas retornam 1. Sem essa opção o resultado é apenas informativo.
 
-O resultado resumido contém `token_changes`, `swatches`, `reused` e `contrast`;
-use `palette --full` para incluir o documento completo em `tokens`. Os tokens novos
+O resultado resumido contém `token_changes`, `swatches`, `reused`, `contrast`,
+resumo de `coverage` e de `perceptual_review`;
+use `palette --full` para incluir o documento completo em `tokens`, cadeias de
+aliases, valores resolvidos e relações perceptuais detalhadas. Os tokens novos
 ficam em `primitive.<paleta>.<passo>` e os semânticos em
 `semantic.<light|dark>.<papel>`, com aliases DTCG. Temas são grupos nomeados deste
 projeto, não uma extensão de modos padronizada pelo DTCG. Não renomeie tokens

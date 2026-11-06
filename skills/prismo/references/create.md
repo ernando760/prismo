@@ -194,3 +194,9 @@ como prova de resolução. Registre bloqueios, inclusive SDK ausente. Não copie
 implementação do componente para stories ou use-cases.
 
 Reutilize tokens existentes pela intenção; justifique novos tokens específicos de componente e revise sua nomenclatura conforme a política aprovada.
+
+## Cobertura e evolução de cores
+
+Para propostas novas de cores, siga o fluxo de validação incremental e apresentação
+da matriz em [colors-coverage.md](colors-coverage.md), antes da aprovação desta
+operação. Consultas legadas e contraste pontual preservam seu escopo.

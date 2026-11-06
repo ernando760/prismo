@@ -122,3 +122,11 @@ a presença do diretório não comprova configuração nem build. Divergências 
 instalação existente exigem decisão explícita, não migração automática.
 
 Mostre nomes e significados somente a partir das fontes de tokens e decisões aprovadas; se não houver significado documentado, registre a lacuna.
+
+## Cobertura de Colors
+
+Use [colors-coverage.md](colors-coverage.md) para documentar cobertura funcional
+e de evolução, usos por tema, exceções e motivos de adiamento. Publique resumos
+e links aos detalhes de aliases, valores e evidências; não regenere escalas nem
+crie aliases para completar a documentação. Diferencie cálculo, inspeção visual
+real e conformidade. Registro legado sem matriz tem cobertura desconhecida.

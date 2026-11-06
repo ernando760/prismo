@@ -1,0 +1,1369 @@
+{
+  "scope": "Durable minimal evidence of two observed natural-prompt sessions, not a new evaluation or publication.",
+  "evaluated_skill_metadata_version": "0.1.0-alpha.2 (development working tree before candidate version bump)",
+  "evaluated_colors_script_sha256": "bfdeb2a943e5fcd70de9f4bbaba88a00950baeef3e77547b2bef79c70f88cddf",
+  "cases": [
+    {
+      "scenario": "link-selection",
+      "evaluated_on": "2026-11-05",
+      "request": "Use a Skill Prismo instalada neste projeto para propor a evolução das cores do Nexa DS. Consulte as decisões em nexa-ds/decisions.json.\nQueremos acrescentar futuramente um Link e um controle de seleção, ambos para os temas claro e escuro. Link deverá ter default, hover e foco. O controle de seleção poderá ter selected e hover; seu pressed está fora da primeira entrega. Ainda não decidimos sobre cores de estados de Toggle. Considere também a possibilidade de outros componentes precisarem de superfícies de interação no roadmap.\nInvestigue os tokens e o Button existentes e apresente uma proposta concreta e proporcional. Preserve as quatro cores já aprovadas de hover/pressed do Button. Não implemente componentes, não altere tokens, decisões ou arquivos do projeto, não migre o projeto nem instale dependências. Quando faltar evidência, indique a lacuna. Execute somente leituras e previews necessários usando a Skill instalada, sem consultar outros projetos nem a implementação externa da Skill. Não use agentes adicionais. Responda em português.",
+      "session": {
+        "fresh": true,
+        "ephemeral": true,
+        "read_only": true,
+        "prior_history_inherited": false
+      },
+      "command": [
+        "python3",
+        ".agents/skills/prismo/scripts/colors.py",
+        "palette",
+        "--plan",
+        "-",
+        "--existing",
+        "nexa-ds/tokens.json",
+        "--require-coverage"
+      ],
+      "plan": {
+        "palettes": {
+          "brand": {
+            "seed": "#4F46E5",
+            "steps": {
+              "300": 0.8,
+              "700": 0.4
+            }
+          }
+        },
+        "themes": {
+          "light": {},
+          "dark": {}
+        },
+        "pairs": [
+          {
+            "foreground": "primitive.brand.900",
+            "background": "semantic.light.surface",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.700",
+            "background": "semantic.light.surface",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.500",
+            "background": "semantic.light.surface",
+            "usage": "non_text"
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "primitive.brand.900",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.900",
+            "background": "semantic.light.surface",
+            "usage": "non_text"
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "primitive.brand.700",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.700",
+            "background": "semantic.light.surface",
+            "usage": "non_text"
+          },
+          {
+            "foreground": "semantic.light.text",
+            "background": "semantic.light.surface",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "semantic.dark.surface",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.300",
+            "background": "semantic.dark.surface",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.500",
+            "background": "semantic.dark.surface",
+            "usage": "non_text"
+          },
+          {
+            "foreground": "primitive.brand.900",
+            "background": "primitive.brand.100",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "semantic.dark.surface",
+            "usage": "non_text"
+          },
+          {
+            "foreground": "primitive.brand.900",
+            "background": "primitive.brand.300",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "primitive.brand.300",
+            "background": "semantic.dark.surface",
+            "usage": "non_text"
+          },
+          {
+            "foreground": "semantic.dark.text",
+            "background": "semantic.dark.surface",
+            "usage": "normal_text"
+          }
+        ],
+        "coverage": {
+          "version": 1,
+          "uses": [
+            {
+              "id": "light-link-default",
+              "use": "link-default",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Inspeção visual e definição final do componente"
+              ],
+              "tokens": [
+                "primitive.brand.900",
+                "semantic.light.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.900",
+                  "background": "semantic.light.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "reuse",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-link-hover",
+              "use": "link-hover",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Inspeção visual e definição final do componente"
+              ],
+              "tokens": [
+                "primitive.brand.700",
+                "semantic.light.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.700",
+                  "background": "semantic.light.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "extension",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-link-focus",
+              "use": "link-focus",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Inspecionar anel com afastamento da superfície; teclado e recorte"
+              ],
+              "tokens": [
+                "primitive.brand.500",
+                "semantic.light.surface",
+                "primitive.brand.900"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.500",
+                  "background": "semantic.light.surface",
+                  "usage": "non_text"
+                },
+                {
+                  "foreground": "primitive.brand.900",
+                  "background": "semantic.light.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "reuse",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-selection-selected",
+              "use": "selection-selected",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Confirmar controle preenchido e indicador; seleção não depender apenas de cor"
+              ],
+              "tokens": [
+                "primitive.brand.900",
+                "primitive.brand.100",
+                "semantic.light.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.100",
+                  "background": "primitive.brand.900",
+                  "usage": "normal_text"
+                },
+                {
+                  "foreground": "primitive.brand.900",
+                  "background": "semantic.light.surface",
+                  "usage": "non_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "reuse",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-selection-hover",
+              "use": "selection-hover",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Confirmar hover sobre controle preenchido, inclusive selected+hover; hover sem seleção mantém indicador ausente"
+              ],
+              "tokens": [
+                "primitive.brand.700",
+                "primitive.brand.100",
+                "semantic.light.surface",
+                "semantic.light.text"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.100",
+                  "background": "primitive.brand.700",
+                  "usage": "normal_text"
+                },
+                {
+                  "foreground": "primitive.brand.700",
+                  "background": "semantic.light.surface",
+                  "usage": "non_text"
+                },
+                {
+                  "foreground": "semantic.light.text",
+                  "background": "semantic.light.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "extension",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-selection-pressed",
+              "use": "selection-pressed",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "deferred",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Pressed excluído da primeira entrega"
+              ],
+              "tokens": [],
+              "pairs": [],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "undecided",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-toggle-states",
+              "use": "toggle-states",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "deferred",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Faltam anatomia, intenção, estados e superfícies concretos"
+              ],
+              "tokens": [],
+              "pairs": [],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "undecided",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "light-other-interaction-surfaces",
+              "use": "other-interaction-surfaces",
+              "theme": "light",
+              "horizon": "evolution",
+              "status": "deferred",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Faltam anatomia, intenção, estados e superfícies concretos"
+              ],
+              "tokens": [],
+              "pairs": [],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "undecided",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-link-default",
+              "use": "link-default",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Inspeção visual e definição final do componente"
+              ],
+              "tokens": [
+                "primitive.brand.100",
+                "semantic.dark.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.100",
+                  "background": "semantic.dark.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "reuse",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-link-hover",
+              "use": "link-hover",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Inspeção visual e definição final do componente"
+              ],
+              "tokens": [
+                "primitive.brand.300",
+                "semantic.dark.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.300",
+                  "background": "semantic.dark.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "extension",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-link-focus",
+              "use": "link-focus",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Inspecionar anel com afastamento da superfície; teclado e recorte"
+              ],
+              "tokens": [
+                "primitive.brand.500",
+                "semantic.dark.surface",
+                "primitive.brand.100"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.500",
+                  "background": "semantic.dark.surface",
+                  "usage": "non_text"
+                },
+                {
+                  "foreground": "primitive.brand.100",
+                  "background": "semantic.dark.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "reuse",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-selection-selected",
+              "use": "selection-selected",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Confirmar controle preenchido e indicador; seleção não depender apenas de cor"
+              ],
+              "tokens": [
+                "primitive.brand.100",
+                "primitive.brand.900",
+                "semantic.dark.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.900",
+                  "background": "primitive.brand.100",
+                  "usage": "normal_text"
+                },
+                {
+                  "foreground": "primitive.brand.100",
+                  "background": "semantic.dark.surface",
+                  "usage": "non_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "reuse",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-selection-hover",
+              "use": "selection-hover",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "partial",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Confirmar hover sobre controle preenchido, inclusive selected+hover; hover sem seleção mantém indicador ausente"
+              ],
+              "tokens": [
+                "primitive.brand.300",
+                "primitive.brand.900",
+                "semantic.dark.surface",
+                "semantic.dark.text"
+              ],
+              "pairs": [
+                {
+                  "foreground": "primitive.brand.900",
+                  "background": "primitive.brand.300",
+                  "usage": "normal_text"
+                },
+                {
+                  "foreground": "primitive.brand.300",
+                  "background": "semantic.dark.surface",
+                  "usage": "non_text"
+                },
+                {
+                  "foreground": "semantic.dark.text",
+                  "background": "semantic.dark.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "extension",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-selection-pressed",
+              "use": "selection-pressed",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "deferred",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Pressed excluído da primeira entrega"
+              ],
+              "tokens": [],
+              "pairs": [],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "undecided",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-toggle-states",
+              "use": "toggle-states",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "deferred",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Faltam anatomia, intenção, estados e superfícies concretos"
+              ],
+              "tokens": [],
+              "pairs": [],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "undecided",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            },
+            {
+              "id": "dark-other-interaction-surfaces",
+              "use": "other-interaction-surfaces",
+              "theme": "dark",
+              "horizon": "evolution",
+              "status": "deferred",
+              "evidence": "Pedido atual: Link e seleção futuros nos dois temas; decisions.json preserva exceções do Button.",
+              "pending": [
+                "Faltam anatomia, intenção, estados e superfícies concretos"
+              ],
+              "tokens": [],
+              "pairs": [],
+              "visual": {
+                "status": "pending",
+                "evidence": "Nenhum componente proposto foi renderizado ou inspecionado."
+              },
+              "decision": "undecided",
+              "alternatives": "Revisados brand.100/500/900 e cores locais do Button; evitar dependência entre componentes. Passos 300/700 candidatos para hover compartilhável; sem promoção das exceções do Button.",
+              "review_when": "Ao projetar o componente e confirmar superfícies e adjacências reais"
+            }
+          ],
+          "steps": [
+            {
+              "token": "primitive.brand.300",
+              "uses": [
+                "dark-link-hover",
+                "dark-selection-hover"
+              ],
+              "reason": "Hover de texto do Link e preenchimento do controle de seleção com contraste para os pares propostos, sem reutilizar exceções do Button.",
+              "naming_evidence": "decisions.naming recommended; escala existente 100/500/900 clara para escura; 300 entre 100 e 500, 700 entre 500 e 900, ambos livres. Números não equivalem a luminosidade."
+            },
+            {
+              "token": "primitive.brand.700",
+              "uses": [
+                "light-link-hover",
+                "light-selection-hover"
+              ],
+              "reason": "Hover de texto do Link e preenchimento do controle de seleção com contraste para os pares propostos, sem reutilizar exceções do Button.",
+              "naming_evidence": "decisions.naming recommended; escala existente 100/500/900 clara para escura; 300 entre 100 e 500, 700 entre 500 e 900, ambos livres. Números não equivalem a luminosidade."
+            }
+          ]
+        }
+      },
+      "canonical_plan_sha256": "4c9a7080e961147a98fb421e53c2d00d88ed2d6371b84347385d646f4c7d9f12",
+      "observed_result": {
+        "exit_code": 0,
+        "stderr": "",
+        "failed_session_commands": 0,
+        "exit_and_stderr_checked_before_json": true,
+        "replay_matches_observed": true,
+        "coverage_summary": {
+          "covered": 0,
+          "partial": 10,
+          "deferred": 6,
+          "not_evaluated": 0
+        },
+        "token_changes": [
+          {
+            "path": "primitive.brand.300",
+            "before": null,
+            "after": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  0.6784313725490196,
+                  0.7215686274509804,
+                  1.0
+                ],
+                "alpha": 1,
+                "hex": "#adb8ff"
+              }
+            }
+          },
+          {
+            "path": "primitive.brand.700",
+            "before": null,
+            "after": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  0.2196078431372549,
+                  0.09019607843137255,
+                  0.7450980392156863
+                ],
+                "alpha": 1,
+                "hex": "#3817be"
+              }
+            }
+          }
+        ],
+        "contrast": [
+          {
+            "foreground": "primitive.brand.900",
+            "background": "semantic.light.surface",
+            "usage": "normal_text",
+            "ratio": 14.552260311028942,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.700",
+            "background": "semantic.light.surface",
+            "usage": "normal_text",
+            "ratio": 8.908542192944523,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.500",
+            "background": "semantic.light.surface",
+            "usage": "non_text",
+            "ratio": 3.6617500821984206,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "primitive.brand.900",
+            "usage": "normal_text",
+            "ratio": 14.499226710991266,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.900",
+            "background": "semantic.light.surface",
+            "usage": "non_text",
+            "ratio": 14.552260311028942,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "primitive.brand.700",
+            "usage": "normal_text",
+            "ratio": 8.876076304245341,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.700",
+            "background": "semantic.light.surface",
+            "usage": "non_text",
+            "ratio": 8.908542192944523,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          },
+          {
+            "foreground": "semantic.light.text",
+            "background": "semantic.light.surface",
+            "usage": "normal_text",
+            "ratio": 13.811548021226457,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "semantic.dark.surface",
+            "usage": "normal_text",
+            "ratio": 13.761213839593948,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.300",
+            "background": "semantic.dark.surface",
+            "usage": "normal_text",
+            "ratio": 8.442191625153495,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.500",
+            "background": "semantic.dark.surface",
+            "usage": "non_text",
+            "ratio": 3.7718434385708703,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          },
+          {
+            "foreground": "primitive.brand.900",
+            "background": "primitive.brand.100",
+            "usage": "normal_text",
+            "ratio": 14.499226710991266,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.100",
+            "background": "semantic.dark.surface",
+            "usage": "non_text",
+            "ratio": 13.761213839593948,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          },
+          {
+            "foreground": "primitive.brand.900",
+            "background": "primitive.brand.300",
+            "usage": "normal_text",
+            "ratio": 8.894945732079702,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "primitive.brand.300",
+            "background": "semantic.dark.surface",
+            "usage": "non_text",
+            "ratio": 8.442191625153495,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          },
+          {
+            "foreground": "semantic.dark.text",
+            "background": "semantic.dark.surface",
+            "usage": "normal_text",
+            "ratio": 13.811548021226457,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          }
+        ],
+        "conformance": "not_assessed",
+        "visual_inspection": "not_performed"
+      },
+      "durable_baseline_replay": "passed with current Colors helper; exact contrast, token changes and coverage summary match"
+    },
+    {
+      "scenario": "success-message",
+      "evaluated_on": "2026-11-05",
+      "request": "Use a Skill Prismo instalada para preparar uma proposta de cores para uma mensagem de sucesso do Nexa DS. Ela terá texto e um ícone sobre a superfície padrão, somente no tema claro. Investigue se as cores atuais atendem ao uso antes de propor novos tokens. Não invente interações, variantes ou estados; o tema escuro está fora deste pedido. Consulte nexa-ds/decisions.json e preserve o Button e as demais fundações. Apresente somente a proposta, sem alterar arquivos do projeto, instalar dependências ou executar migrações. Use apenas os recursos desta cópia e a Skill aqui instalada. Não use agentes adicionais. Responda em português.",
+      "session": {
+        "fresh": true,
+        "ephemeral": true,
+        "read_only": true,
+        "prior_history_inherited": false
+      },
+      "command": [
+        "python3",
+        ".agents/skills/prismo/scripts/colors.py",
+        "palette",
+        "--plan",
+        "-",
+        "--existing",
+        "nexa-ds/tokens.json",
+        "--require-coverage"
+      ],
+      "plan": {
+        "palettes": {},
+        "themes": {
+          "light": {}
+        },
+        "pairs": [
+          {
+            "foreground": "semantic.light.success",
+            "background": "semantic.light.surface",
+            "usage": "normal_text"
+          },
+          {
+            "foreground": "semantic.light.success",
+            "background": "semantic.light.surface",
+            "usage": "non_text"
+          }
+        ],
+        "coverage": {
+          "version": 1,
+          "uses": [
+            {
+              "id": "success-message-text",
+              "use": "Texto da mensagem de sucesso",
+              "theme": "light",
+              "horizon": "functional",
+              "status": "partial",
+              "evidence": "Pedido atual: mensagem com texto e ícone na superfície padrão, somente tema claro; decisions.json foundations.colors.plan.themes.light e tokens.json confirmam os aliases existentes.",
+              "pending": [
+                "Inspeção visual da mensagem renderizada"
+              ],
+              "tokens": [
+                "semantic.light.success",
+                "semantic.light.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "semantic.light.success",
+                  "background": "semantic.light.surface",
+                  "usage": "normal_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Não foi inspecionada uma mensagem renderizada; proposta somente leitura."
+              },
+              "decision": "reuse",
+              "alternatives": "O papel semântico success já representa a intenção; neutral.text não comunica sucesso por cor, success.100 e success.500 não justificam substituir o alias existente, e cores do Button pertencem a outro contrato. Não há necessidade demonstrada de novo passo ou alias.",
+              "review_when": "Na inspeção visual da mensagem ou se mudarem superfície, opacidade ou uso."
+            },
+            {
+              "id": "success-message-icon",
+              "use": "Ícone da mensagem de sucesso",
+              "theme": "light",
+              "horizon": "functional",
+              "status": "partial",
+              "evidence": "Pedido atual: mensagem com texto e ícone na superfície padrão, somente tema claro; decisions.json foundations.colors.plan.themes.light e tokens.json confirmam os aliases existentes.",
+              "pending": [
+                "Inspeção visual da mensagem renderizada"
+              ],
+              "tokens": [
+                "semantic.light.success",
+                "semantic.light.surface"
+              ],
+              "pairs": [
+                {
+                  "foreground": "semantic.light.success",
+                  "background": "semantic.light.surface",
+                  "usage": "non_text"
+                }
+              ],
+              "visual": {
+                "status": "pending",
+                "evidence": "Não foi inspecionada uma mensagem renderizada; proposta somente leitura."
+              },
+              "decision": "reuse",
+              "alternatives": "O papel semântico success já representa a intenção; neutral.text não comunica sucesso por cor, success.100 e success.500 não justificam substituir o alias existente, e cores do Button pertencem a outro contrato. Não há necessidade demonstrada de novo passo ou alias.",
+              "review_when": "Na inspeção visual da mensagem ou se mudarem superfície, opacidade ou uso."
+            }
+          ],
+          "steps": []
+        }
+      },
+      "canonical_plan_sha256": "36e7ae3a8781b2af731adc9e0117c356d7b1a922fe704411120747e1f1ca4931",
+      "observed_result": {
+        "exit_code": 0,
+        "stderr": "",
+        "failed_session_commands": 0,
+        "exit_and_stderr_checked_before_json": true,
+        "replay_matches_observed": true,
+        "coverage_summary": {
+          "covered": 0,
+          "partial": 2,
+          "deferred": 0,
+          "not_evaluated": 0
+        },
+        "token_changes": [],
+        "contrast": [
+          {
+            "foreground": "semantic.light.success",
+            "background": "semantic.light.surface",
+            "usage": "normal_text",
+            "ratio": 13.549037572825425,
+            "AA": true,
+            "AAA": true,
+            "threshold_AA": 4.5,
+            "threshold_AAA": 7
+          },
+          {
+            "foreground": "semantic.light.success",
+            "background": "semantic.light.surface",
+            "usage": "non_text",
+            "ratio": 13.549037572825425,
+            "AA": true,
+            "AAA": null,
+            "threshold_AA": 3,
+            "threshold_AAA": null
+          }
+        ],
+        "conformance": "not_assessed",
+        "visual_inspection": "not_performed"
+      },
+      "durable_baseline_replay": "passed with current Colors helper; exact contrast, token changes and coverage summary match"
+    }
+  ],
+  "limitations": [
+    "Only two scenarios; no general reliability claim.",
+    "Plans were validated previews, not approved or persisted consumer changes.",
+    "Initial failed session used invalid usage and masked stderr; /dev/stdin was not the cause.",
+    "Full local transcripts remain outside the release; inputs and validation outcomes are retained here.",
+    "Both sessions still read about 58638 characters in one command and repeated tokens.md."
+  ],
+  "baseline_colors": {
+    "primitive": {
+      "brand": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.9176470588235294,
+              0.9294117647058824,
+              1.0
+            ],
+            "alpha": 1,
+            "hex": "#eaedff"
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.4,
+              0.403921568627451,
+              1.0
+            ],
+            "alpha": 1,
+            "hex": "#6667ff"
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.09803921568627451,
+              0.0,
+              0.4117647058823529
+            ],
+            "alpha": 1,
+            "hex": "#190069"
+          }
+        }
+      },
+      "neutral": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8980392156862745,
+              0.9372549019607843,
+              1.0
+            ],
+            "alpha": 1,
+            "hex": "#e5efff"
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.44313725490196076,
+              0.5058823529411764,
+              0.6
+            ],
+            "alpha": 1,
+            "hex": "#718199"
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.08235294117647059,
+              0.13333333333333333,
+              0.20784313725490197
+            ],
+            "alpha": 1,
+            "hex": "#152235"
+          }
+        }
+      },
+      "success": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.7803921568627451,
+              1.0,
+              0.8196078431372549
+            ],
+            "alpha": 1,
+            "hex": "#c7ffd1"
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.20392156862745098,
+              0.5882352941176471,
+              0.3215686274509804
+            ],
+            "alpha": 1,
+            "hex": "#349652"
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.0,
+              0.16470588235294117,
+              0.054901960784313725
+            ],
+            "alpha": 1,
+            "hex": "#002a0e"
+          }
+        }
+      },
+      "warning": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1.0,
+              0.9215686274509803,
+              0.8431372549019608
+            ],
+            "alpha": 1,
+            "hex": "#ffebd7"
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.6901960784313725,
+              0.4392156862745098,
+              0.12549019607843137
+            ],
+            "alpha": 1,
+            "hex": "#b07020"
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.2,
+              0.10588235294117647,
+              0.0
+            ],
+            "alpha": 1,
+            "hex": "#331b00"
+          }
+        }
+      },
+      "danger": {
+        "100": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              1.0,
+              0.9137254901960784,
+              0.8980392156862745
+            ],
+            "alpha": 1,
+            "hex": "#ffe9e5"
+          }
+        },
+        "500": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.8588235294117647,
+              0.25882352941176473,
+              0.22745098039215686
+            ],
+            "alpha": 1,
+            "hex": "#db423a"
+          }
+        },
+        "900": {
+          "$type": "color",
+          "$value": {
+            "colorSpace": "srgb",
+            "components": [
+              0.2784313725490196,
+              0.0,
+              0.00784313725490196
+            ],
+            "alpha": 1,
+            "hex": "#470002"
+          }
+        }
+      },
+      "elevation": {
+        "color": {
+          "low": {
+            "layer0": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "alpha": 0.12
+              }
+            }
+          }
+        }
+      }
+    },
+    "semantic": {
+      "light": {
+        "surface": {
+          "$type": "color",
+          "$value": "{primitive.neutral.100}"
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{primitive.neutral.900}"
+        },
+        "brand": {
+          "$type": "color",
+          "$value": "{primitive.brand.900}"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "{primitive.success.900}"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "{primitive.warning.900}"
+        },
+        "danger": {
+          "$type": "color",
+          "$value": "{primitive.danger.900}"
+        }
+      },
+      "dark": {
+        "surface": {
+          "$type": "color",
+          "$value": "{primitive.neutral.900}"
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{primitive.neutral.100}"
+        },
+        "brand": {
+          "$type": "color",
+          "$value": "{primitive.brand.100}"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "{primitive.success.100}"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "{primitive.warning.100}"
+        },
+        "danger": {
+          "$type": "color",
+          "$value": "{primitive.danger.100}"
+        }
+      }
+    },
+    "component": {
+      "button": {
+        "primary": {
+          "light": {
+            "background": {
+              "default": {
+                "$type": "color",
+                "$value": "{primitive.brand.900}"
+              },
+              "hover": {
+                "$type": "color",
+                "$value": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0.18823529411764706,
+                    0.1450980392156863,
+                    0.6078431372549019
+                  ],
+                  "alpha": 1,
+                  "hex": "#30259b"
+                }
+              },
+              "pressed": {
+                "$type": "color",
+                "$value": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0.27058823529411763,
+                    0.23529411764705882,
+                    0.792156862745098
+                  ],
+                  "alpha": 1,
+                  "hex": "#453cca"
+                }
+              }
+            },
+            "foreground": {
+              "$type": "color",
+              "$value": "{primitive.brand.100}"
+            },
+            "focus": {
+              "outline": {
+                "$type": "color",
+                "$value": "{primitive.brand.500}"
+              }
+            },
+            "disabled": {
+              "background": {
+                "$type": "color",
+                "$value": "{semantic.light.surface}"
+              },
+              "foreground": {
+                "$type": "color",
+                "$value": "{primitive.neutral.500}"
+              }
+            }
+          },
+          "dark": {
+            "background": {
+              "default": {
+                "$type": "color",
+                "$value": "{primitive.brand.100}"
+              },
+              "hover": {
+                "$type": "color",
+                "$value": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0.7843137254901961,
+                    0.8,
+                    1.0
+                  ],
+                  "alpha": 1,
+                  "hex": "#c8ccff"
+                }
+              },
+              "pressed": {
+                "$type": "color",
+                "$value": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0.6392156862745098,
+                    0.6627450980392157,
+                    1.0
+                  ],
+                  "alpha": 1,
+                  "hex": "#a3a9ff"
+                }
+              }
+            },
+            "foreground": {
+              "$type": "color",
+              "$value": "{primitive.brand.900}"
+            },
+            "focus": {
+              "outline": {
+                "$type": "color",
+                "$value": "{primitive.brand.500}"
+              }
+            },
+            "disabled": {
+              "background": {
+                "$type": "color",
+                "$value": "{semantic.dark.surface}"
+              },
+              "foreground": {
+                "$type": "color",
+                "$value": "{primitive.neutral.500}"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "baseline_scope": "Only existing DTCG color tokens needed to reproduce the two previews; non-color foundations, components and full transcripts are excluded."
+}

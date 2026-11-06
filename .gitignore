@@ -14,3 +14,9 @@ node_modules/
 !.env.example
 *.log
 .DS_Store
+
+# Independent release validation environment
+/pocs/
+
+# Local implementation plans and temporary investigations
+/plans/

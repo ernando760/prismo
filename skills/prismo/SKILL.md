@@ -2,7 +2,7 @@
 name: prismo
 description: Cria e evolui Design Systems Web, Flutter e Marketing com fundações DTCG, componentes Web/Flutter e visualização no Storybook. Use para init, foundations, tokens, create, document ou audit do Prismo.
 metadata:
-  version: "0.1.0-alpha.2"
+  version: "0.1.0-alpha.3"
 ---
 
 # Prismo
@@ -18,6 +18,11 @@ reapresente mudanças materiais. A exceção é `foundations`: o pedido de cria�
 autoriza a execução automática aditiva conforme seu guia, sem aprovações por
 etapa; conflitos e escolhas essenciais ausentes exigem esclarecimento.
 `audit` permanece somente leitura.
+
+Se a proposta acrescentar/alterar cores, papéis, estados, mapeamentos ou exceções,
+leia [references/colors-coverage.md](references/colors-coverage.md) antes de propor:
+valide a matriz incremental dos usos afetados no preview exigido pelo guia.
+Consulta legada ou contraste pontual sem nova proposta não exige reconstruir matriz.
 
 ## Operações
 

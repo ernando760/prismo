@@ -1,0 +1,73 @@
+{
+  "palettes": {
+    "gray": {
+      "seed": "#808080",
+      "steps": {
+        "100": 1,
+        "900": 0
+      }
+    }
+  },
+  "themes": {
+    "light": {}
+  },
+  "pairs": [
+    {
+      "foreground": "primitive.gray.900",
+      "background": "primitive.gray.100",
+      "usage": "normal_text"
+    }
+  ],
+  "coverage": {
+    "version": 1,
+    "uses": [
+      {
+        "id": "body",
+        "use": "Body text on surface",
+        "theme": "light",
+        "horizon": "functional",
+        "status": "partial",
+        "evidence": "Approved brief",
+        "pending": [
+          "Visual inspection"
+        ],
+        "tokens": [
+          "primitive.gray.900",
+          "primitive.gray.100"
+        ],
+        "pairs": [
+          {
+            "foreground": "primitive.gray.900",
+            "background": "primitive.gray.100",
+            "usage": "normal_text"
+          }
+        ],
+        "visual": {
+          "status": "pending",
+          "evidence": "Not inspected"
+        },
+        "decision": "extension",
+        "alternatives": "No existing palette",
+        "review_when": "Inspect real component"
+      }
+    ],
+    "steps": [
+      {
+        "token": "primitive.gray.100",
+        "uses": [
+          "body"
+        ],
+        "reason": "Required text pair",
+        "naming_evidence": "Existing numeric convention, lighter first"
+      },
+      {
+        "token": "primitive.gray.900",
+        "uses": [
+          "body"
+        ],
+        "reason": "Required text pair",
+        "naming_evidence": "Existing numeric convention, lighter first"
+      }
+    ]
+  }
+}

@@ -3,6 +3,23 @@
 This file records published versions and prepared release candidates of Prismo.
 Pre-release entries describe experimental scope and retain support limitations.
 
+## 0.1.0-alpha.3 — release candidate
+
+- Plan Colors granularity through functional and evolution coverage, without a fixed
+  number of steps, preserving justified component-specific colors.
+- Add incremental coverage validation, alias traces and final sRGB perceptual reports;
+  keep calculation, declared visual evidence and conformance separate.
+- Add `palette --require-coverage`, stdin plans via `--plan -`, JSON contract help
+  and field diagnostics while preserving legacy plans and foundations recovery.
+- Require validated affected-use matrices before new color proposals in the guided
+  workflow; preserve approval boundaries and prevent implicit migrations.
+- Keep internal working plans local and preserve compact release evidence in docs.
+
+The candidate remains experimental. Visual review, complete accessibility,
+context-reading efficiency and broader conversational reliability remain limited.
+No tag or GitHub Release has been created as part of this preparation.
+See the [alpha.3 release notes](docs/experimental-release-notes-0.1.0-alpha.3.md).
+
 ## 0.1.0-alpha.2 — release candidate
 
 - Add automatic, additive foundations execution with a persistent checklist,

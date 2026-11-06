@@ -13,7 +13,7 @@ from naming import from_record as naming_from_record, diagnose as naming_diagnos
 from token_source import token_source as find_token_source
 from token_errors import UnsupportedTokenFormat
 from tokens import read, relative, validate, SKIP, TEXT
-from colors import contrast, evaluate
+from colors import contrast, evaluate, recorded_coverage, coverage_summary
 
 STYLE = re.compile(r'(?:color|background(?:-color|Color)?|border(?:-radius|-width|-color|Radius|Width|Color)?|font(?:-size|Size)|line(?:-height|Height)|letter(?:-spacing|Spacing)|padding|margin|gap|box-shadow)\s*:\s*([^;{}\n]+)', re.I)
 LITERAL = re.compile(r'#[0-9a-f]{3,8}\b|(?<![\w.-])(?:[1-9]\d*(?:\.\d+)?|0\.\d*[1-9]\d*)(?:px|rem)\b|\b(?:rgb|hsl)a?\(', re.I)
@@ -195,6 +195,24 @@ def audit(project, config=None, sources=None, decisions='design-system/decisions
         add('TOKENS_UNKNOWN', 'low', 'manual', 'Fonte DTCG não identificada', {'decisions': decisions}, 'Localizar fontes/agregação e fornecer --source; não gerar tokens durante audit.')
     else:
         token_status = 'blocked'
+    colors_coverage = {'status': 'unknown_legacy', 'conformance': 'not_assessed'}
+    if record:
+        if token_status == 'passed_supported_subset':
+            try:
+                colors_coverage = coverage_summary(recorded_coverage(record, trees, naming))
+                for use in colors_coverage.get('uses', []):
+                    if use['calculation'] == 'failed':
+                        add('COLORS_DECLARED_CONTRAST', 'high', 'confirmed',
+                            'Contraste insuficiente no uso declarado de Colors',
+                            {'file': decisions, 'use': use['id'], 'theme': use['theme']},
+                            'Rever pares declarados e contexto real; cálculo não comprova violação no runtime.')
+            except (ValueError, TypeError, KeyError, RecursionError) as error:
+                colors_coverage = {'status': 'needs_review', 'error': str(error), 'conformance': 'not_assessed'}
+                add('COLORS_COVERAGE', 'medium', 'risk', 'Cobertura de Colors exige revisão',
+                    {'file': decisions, 'error': str(error)},
+                    'Conferir contrato, pares, fontes e evidências; nenhum token foi gerado ou alterado.')
+        else:
+            colors_coverage = {'status': 'blocked', 'conformance': 'not_assessed'}
     contrast_results = []
     for pair in config['contrast_pairs']:
         ev, usage = pair['evidence'], pair['usage']
@@ -267,7 +285,7 @@ def audit(project, config=None, sources=None, decisions='design-system/decisions
     contrast_results.sort(key=lambda result: 0 if result.get('AA') is False else 1 if result['status'] == 'manual' else 2)
     return {'status': 'findings' if counts['confirmed'] else 'needs_review' if counts['risk'] else 'limited_checks_completed',
             'summary': counts, 'findings': findings, 'omitted_findings': omitted,
-            'checks': {'tokens': {'status': token_status, 'count': token_count, 'sources': sources}, 'contrast': contrast_results[:10], 'contrast_total': len(contrast_results), 'contrast_omitted': max(0, len(contrast_results) - 10)},
+            'checks': {'colors_coverage': colors_coverage, 'tokens': {'status': token_status, 'count': token_count, 'sources': sources}, 'contrast': contrast_results[:10], 'contrast_total': len(contrast_results), 'contrast_omitted': max(0, len(contrast_results) - 10)},
             'coverage': coverage,
             'manual_checks': ['Conferir contrato/API, decisões, variantes e estados nos exemplos/testes reais.', 'Verificar teclado, foco, nome/semântica, leitor de tela, zoom, alvos e temas no runtime.'],
             'limitations': 'Somente leitura; validação DTCG parcial e busca textual. Cálculo do par declarado não prova aplicação nem conformidade WCAG completa. Sem execução de comandos/JS do projeto.'}

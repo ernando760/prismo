@@ -234,6 +234,11 @@ def execute(root, names=None, specs=None, decisions='design-system/decisions.jso
                 final = calculate(name, candidate['plan'], persisted, naming) if naming else calculate(name, candidate['plan'], persisted)
                 if final['tokens'] != persisted or read(decision_path).get('foundations', {}).get(name, {}).get('plan') != candidate['plan']:
                     raise ValueError('Validação após persistência falhou: ' + name)
+                if name == 'colors' and 'coverage' in candidate['plan']:
+                    saved = read(decision_path)['foundations'][name]
+                    if saved.get('validation', {}).get('coverage') != final['coverage']:
+                        raise ValueError('Cobertura persistida diverge dos tokens/decisões de Colors.')
+                    step['checks']['coverage'] = 'recorded_not_visual_validation'
                 step['checks']['persisted'] = 'passed'
                 step['completed_once'] = True
                 step['status'] = 'completed'
