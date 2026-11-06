@@ -1,6 +1,6 @@
 # Prismo
 
-Candidata experimental: `v0.1.0-alpha.3` — ainda sem tag ou publicação.
+Versão experimental atual: [v0.1.0-alpha.3](https://github.com/ernando760/prismo/releases/tag/v0.1.0-alpha.3), publicada como pre-release.
 
 Agent Skill experimental para criar e evoluir Design Systems Web, Flutter e
 Marketing no Codex. Uma única Skill, com referências sob demanda e helpers Python
@@ -11,11 +11,11 @@ baseados na biblioteca padrão, sem orquestradores ou múltiplos agentes.
 | Operação | Escopo e referência |
 | --- | --- |
 | `init` | Investiga e propõe decisões/caminhos; o helper materializa somente o plano aprovado. [Guia](skills/prismo/references/init.md) |
-| `foundations` | Criação automática completa, parcial ou individual de Colors, Typography, Spacing, Borders e Elevation, com checklist e retomada. [Fluxo](skills/prismo/references/foundations.md) |
+| `foundations` | Criação automática completa, parcial ou individual de Colors, Typography, Spacing, Borders e Elevation, com origens das decisões, checklist, proteção contra conflitos e retomada. [Fluxo](skills/prismo/references/foundations.md) |
 | `tokens` | Validação parcial DTCG, prévia de alterações, aliases, dependentes e busca de impacto. [Guia](skills/prismo/references/tokens.md) |
 | `create` | Fluxo guiado de componentes Web/Flutter: investigar, projetar, aprovar, implementar, inspecionar e validar. O helper revisa o plano. [Guia](skills/prismo/references/create.md) |
 | `document` | Fluxo guiado de documentação no Docusaurus, com inventário, templates e reutilização das fontes existentes. [Guia](skills/prismo/references/document.md) |
-| `audit` | Auditoria somente leitura: achados comprovados, riscos e verificações manuais separados. [Guia](skills/prismo/references/audit.md) |
+| `audit` | Auditoria somente leitura de tokens, cobertura de Colors, pares declarados e indícios de uso; separa achados comprovados, riscos e verificações manuais. [Guia](skills/prismo/references/audit.md) |
 
 A [visualização de fundações no Storybook](skills/prismo/references/storybook.md)
 é um recurso de foundations, sem operação adicional. As
@@ -47,21 +47,28 @@ Ambiente suportado nesta etapa: Linux, Codex com suporte a Agent Skills, Bash e
 utilitários Unix (`cp`, `mv`, `ln`, `mkdir`, `rm`, `rmdir`, `cat`, `dirname`,
 `mktemp`, `realpath -m`, como no GNU coreutils). macOS/Windows não foram validados.
 Helpers exigem Python 3.9+ e somente a biblioteca padrão; o mínimo declarado não
-foi exercitado nesta preparação, que usou Python 3.14.7. Não há pacotes Python
+foi exercitado na validação da alpha.3, que usou Python 3.14.7. Não há pacotes Python
 terceiros para instalar no consumidor.
 
 Node, gerenciador de pacotes, SDK Flutter/Dart e ferramentas de catálogo/portal
 são necessários conforme a operação e a plataforma. Reutilize versões compatíveis
 já adotadas pelo consumidor; não instale todas como requisito da Skill.
 
-O projeto consumidor deve existir. A partir deste repositório:
+O projeto consumidor deve existir. Para instalar a versão publicada, obtenha o
+checkout da tag e faça uma cópia da Skill:
 
 ```bash
-# Desenvolvimento: alterações na origem aparecem imediatamente no consumidor.
-bash scripts/install.sh --mode symlink /caminho/para/poc
+git clone --branch v0.1.0-alpha.3 --depth 1 https://github.com/ernando760/prismo.git prismo
+cd prismo
+bash scripts/install.sh --mode copy "/caminho/para/projeto"
+```
 
-# Alternativa: cópia independente, sem vínculo com a origem.
-bash scripts/install.sh --mode copy /caminho/para/outro-projeto
+A cópia é independente do checkout. Para desenvolver a Skill, use um checkout de
+desenvolvimento e instale por symlink; alterações na origem aparecem imediatamente
+no consumidor:
+
+```bash
+bash scripts/install.sh --mode symlink "/caminho/para/projeto-de-desenvolvimento"
 ```
 
 O destino é sempre `PROJETO/.agents/skills/prismo/`. Caminhos relativos são
@@ -75,12 +82,16 @@ e o padrão [Agent Skills](https://agentskills.io/specification).
 
 ## Atualização e proteção de arquivos
 
+A versão instalada é a do checkout usado pelo instalador. Em um clone existente,
+selecione a tag publicada antes de atualizar a cópia no consumidor:
+
 ```bash
-# Atualizar uma cópia após alterar ou atualizar este repositório.
-bash scripts/install.sh --mode copy --update /caminho/para/poc
+git fetch origin tag v0.1.0-alpha.3
+git switch --detach v0.1.0-alpha.3
+bash scripts/install.sh --mode copy --update "/caminho/para/projeto"
 
 # Também permite trocar uma cópia reconhecida para symlink (ou o inverso).
-bash scripts/install.sh --mode symlink --update /caminho/para/poc
+bash scripts/install.sh --mode symlink --update "/caminho/para/projeto"
 ```
 
 Sem `--update`, qualquer destino existente é recusado, inclusive links quebrados.
@@ -116,6 +127,7 @@ $prismo foundations colors spacing
 $prismo foundations elevation
 $prismo crie apenas tipografia e bordas
 $prismo tokens validar as fontes existentes
+$prismo proponha as cores de um Link claro e escuro, reutilizando os tokens existentes
 $prismo create NomeDoComponente
 $prismo document as fundações
 $prismo audit o pacote Web
@@ -148,6 +160,36 @@ Não há aprovação repetida de padrões seguros; marca, fontes e conflitos sem
 resposta continuam exigindo esclarecimento. Transações pendentes em qualquer etapa
 bloqueiam pedidos que omitam sua recuperação; arquivos alterados externamente
 exigem investigação. Veja o [guia](skills/prismo/references/foundations.md).
+
+### Paletas e cobertura de cores
+
+Na alpha.3, a granularidade das paletas considera usos funcionais e evolução
+fundamentada, sem quantidade fixa de tons. Para propostas novas, a Skill prepara
+uma matriz incremental somente dos usos afetados, por tema, distinguindo cobertura
+concluída, parcial, adiada e não avaliada.
+
+O fluxo avalia **reuso → extensão → exceção justificada**. Cores específicas de
+componentes continuam permitidas; novos passos e aliases exigem finalidade, revisão
+da nomenclatura e aprovação no fluxo da operação. Tokens aprovados e projetos
+legados são preservados, sem migração automática.
+
+O preview resolve aliases e calcula contraste sobre os valores finais, com
+relatórios perceptuais em OKLCH. Cálculo, inspeção visual declarada e conformidade
+são registrados separadamente. A conclusão técnica não garante harmonia visual
+ou conformidade WCAG completa.
+
+No consumidor, consulte a ajuda e valide um plano preparado conforme o
+[guia de cobertura](skills/prismo/references/colors-coverage.md):
+
+```bash
+python3 .agents/skills/prismo/scripts/colors.py palette --help
+python3 .agents/skills/prismo/scripts/colors.py palette --plan /tmp/colors-plan.json --existing design-system/tokens.json --require-coverage
+```
+
+`--plan -` aceita o JSON por stdin. Confira retorno e stderr antes de interpretar
+stdout; a saída é resumida por padrão, com detalhes via `--full`. O helper não
+persiste nem aprova mudanças. Planos legados continuam aceitos sem
+`--require-coverage`; consultas pontuais não exigem reconstruir a matriz.
 
 ### Nomenclatura de tokens
 
@@ -214,7 +256,7 @@ Os resultados em `tests/*-results.md` são históricos, com limites da execuçã
 original. O [checklist da primeira release](docs/experimental-release-checklist.md)
 e a [validação da alpha.2](docs/evidencias-alpha2/RESULTADOS.md) preservam evidências
 das versões anteriores. A [validação da alpha.3](docs/evidencias-alpha3/RESULTADOS.md)
-registra os cenários, resultados e limites da candidata atual.
+registra os cenários, resultados e limites usados na preparação da versão publicada.
 
 `docs/` mantém contratos/documentação permanente e registros de release. Planos de
 implementação, investigações e relatórios de trabalho ficam em `plans/`, pasta
@@ -222,10 +264,10 @@ exclusivamente local e ignorada pelo Git; não são dependências da documentaç
 
 ## Limites de uso experimental
 
-- Colors usa cobertura incremental e validação prévia para propostas novas; o modo
-  legado continua aceito. Consulte [Colors](skills/prismo/references/colors-coverage.md).
-  Inspeção visual declarada não é comprovada pelo helper; duas sessões novas
-  exercitaram o fluxo corrigido. Leitura excessiva de decisões ainda foi observada.
+- Colors valida estrutura, vínculos e cálculos; justificativas, nomenclatura e
+  evidência visual exigem revisão contextual. Duas sessões novas exercitaram o
+  fluxo corrigido, sem demonstrar confiabilidade geral. Leitura excessiva de
+  decisões e repetição de referências ainda foram observadas.
 - Uso acompanhado: decisões/diffs precisam de aprovação fora da automação aditiva
   de `foundations`; nela, escolhas essenciais ausentes e conflitos exigem diálogo.
   Sessões novas exercitaram invocação explícita, init, as cinco fundações,
@@ -244,7 +286,7 @@ exclusivamente local e ignorada pelo Git; não são dependências da documentaç
   desempenho ou WCAG completa. Browser, leitor de tela e dispositivo continuam
   necessários conforme a mudança; os testes da suíte não os substituem.
 - Flutter/Widgetbook têm fluxo e fixtures de revisão, sem validação integral de
-  componentes gerados em SDK/device nesta preparação. Projeções de sombras não
+  componentes gerados em SDK/device na validação da alpha.3. Projeções de sombras não
   garantem equivalência CSS/Flutter; inset bloqueia BoxShadow. Elevation aceita
   semânticos simples, pontuados e aninhados, com alvos existentes ou já emitidos.
 - Renderers de fundações HTML/React e templates Docusaurus estão disponíveis;
@@ -253,6 +295,7 @@ exclusivamente local e ignorada pelo Git; não são dependências da documentaç
 - Marketing participa do escopo de decisões, fundações e documentação; não possui
   gerador de componentes próprio. `create` implementa Web ou Flutter.
 
-Consulte as [notas da candidata alpha.3](docs/experimental-release-notes-0.1.0-alpha.3.md)
-para capacidades, cenários exercitados e limitações.
+Consulte a [pre-release alpha.3 publicada](https://github.com/ernando760/prismo/releases/tag/v0.1.0-alpha.3)
+para as notas da versão e a [documentação de sua preparação](docs/experimental-release-notes-0.1.0-alpha.3.md)
+para o registro histórico da candidata.
 Consulte o [CHANGELOG](CHANGELOG.md) para o histórico das versões.
